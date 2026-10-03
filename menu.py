@@ -20,6 +20,16 @@ def show_header():
     print(main_title)
 
 
+def select_gender():
+    while True:
+        gender = input("Género (F/M): ").strip().upper()
+
+        if gender in ("F", "M"):
+            return gender
+
+        print("Opción inválida. Ingresa F o M.")
+
+
 def select_city():
     for number, city in enumerate(CITIES, start=1):
         print(f"{number}. {city}")
@@ -52,7 +62,7 @@ def show_register_menu():
     show_header()
 
     name = input("Nombre: ").strip().capitalize()
-    gender = input("Género (F/M): ").strip().upper()
+    gender = select_gender()
     orientation = (
         input("Orientación sexual Hetero(H) u Otros(O): ").strip().upper()
     )

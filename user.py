@@ -9,6 +9,8 @@ class User:
         city,
         balance=0,
     ):
+        self.validate_gender(gender)
+
         self.name = name
         self.gender = gender
         self.orientation = orientation
@@ -17,6 +19,11 @@ class User:
         self.email = email
         self.is_active = True
         self.balance = balance
+
+    @staticmethod
+    def validate_gender(gender):
+        if gender not in ("F", "M"):
+            raise ValueError("Opción inválida")
 
     def __str__(self):
         return self.name
