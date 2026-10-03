@@ -22,6 +22,18 @@ def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
 
+def input_name():
+    while True:
+        name = input("Nombre: ").strip().capitalize()
+
+        if name.isalpha():
+            return name
+
+        elif not name:
+            print("Tu nombre no puede estar vacio.")
+
+        elif not name.isalpha():
+            print("Tu nombre sólo puede contener letras.")
 
 def select_gender():
     while True:
@@ -114,7 +126,7 @@ def show_main_menu():
 def show_register_menu():
     show_header()
 
-    name = input("Nombre: ").strip().capitalize()
+    name = input_name()
     gender = select_gender()
     orientation = select_sexual_orientation()
     birth_date = input_birth_date()
