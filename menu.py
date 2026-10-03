@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pyfiglet import Figlet
 from validator_collection import checkers
 
@@ -41,6 +43,34 @@ def select_sexual_orientation():
             return orientation
 
         print("Opción inválida. Ingresa H u O.")
+
+
+def input_birth_date():
+    while True:
+        today = datetime.now().date()
+
+        birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
+
+        try:
+            birth_date = datetime.strptime(birth_date, "%d/%m/%Y").date()
+        except ValueError:
+            print("Fecha inválida.")
+            continue
+
+        if birth_date > today:
+            print("¿Vienes del futuro?")
+            continue
+
+        age = today.year - birth_date.year
+
+        if (today.month, today.day) < (birth_date.month, birth_date.day):
+            age -= 1
+
+        if age < 18:
+            print("Debes ser mayor de edad para poder registrarte.")
+            continue
+
+        return birth_date
 
 
 def input_email():
@@ -87,7 +117,7 @@ def show_register_menu():
     name = input("Nombre: ").strip().capitalize()
     gender = select_gender()
     orientation = select_sexual_orientation()
-    birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
+    birth_date = input_birth_date()
     email = input_email()
     city = select_city()
 

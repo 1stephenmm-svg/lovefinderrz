@@ -1,3 +1,5 @@
+from datetime import date
+
 from validator_collection import checkers
 
 
@@ -13,6 +15,9 @@ class User:
         balance=0,
     ):
         self.validate_gender(gender)
+        self.validate_sexual_orientation(orientation)
+        self.validate_email(email)
+        self.validate_birth_date(birth_date)
 
         self.name = name
         self.gender = gender
@@ -37,6 +42,23 @@ class User:
     def validate_email(email):
         if not checkers.is_email(email):
             raise ValueError("Email inválido")
+
+    @staticmethod
+    def validate_birth_date(birth_date):
+        if birth_date > date.today():
+            raise ValueError("¿Vienes del futuro?")
+
+        today = date.today()
+        age = today.year - birth_date.year
+
+        if (today.month, today.day) < (
+            birth_date.month,
+            birth_date.day,
+        ):
+            age -= 1
+
+        if age < 18:
+            raise ValueError("Debes ser mayor de edad para registrarte.")
 
     def __str__(self):
         return self.name
