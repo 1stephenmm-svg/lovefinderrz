@@ -2,6 +2,8 @@ from datetime import date
 
 from validator_collection import checkers
 
+from location import get_random_location
+
 
 class User:
     def __init__(
@@ -59,6 +61,14 @@ class User:
 
         if age < 18:
             raise ValueError("Debes ser mayor de edad para registrarte.")
+
+    @classmethod
+    def create(cls, name, gender, orientation, birth_date, email, city):
+        location = get_random_location(city)
+
+        return cls(
+            name, gender, orientation, birth_date, email, city, location
+        )
 
     def __str__(self):
         return self.name

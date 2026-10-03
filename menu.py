@@ -7,14 +7,14 @@ figlet = Figlet()
 figlet.setFont(font="graffiti")
 
 CITIES = [
-    "Pasto",
-    "Ipiales",
-    "Túquerres",
-    "Tumaco",
-    "Cali",
-    "Tulcán",
-    "Quito",
-    "Bogotá",
+    "Pasto, Nariño, Colombia",
+    "Ipiales, Nariño, Colombia",
+    "Túquerres, Nariño, Colombia",
+    "Tumaco, Nariño, Colombia",
+    "Cali, Valle del Cauca, Colombia",
+    "Tulcán, Carchi, Ecuador",
+    "Quito, Pichincha, Ecuador",
+    "Bogotá D.C., Bogotá, Colombia",
 ]
 
 
