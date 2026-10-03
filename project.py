@@ -1,5 +1,12 @@
 from pyfiglet import Figlet
 
+from user import User
+
+figlet = Figlet()
+figlet.setFont(font="graffiti")
+
+users = []
+
 
 def main():
 
@@ -9,7 +16,10 @@ def main():
         option = input("Selecciona una opción: ").strip()
         match option:
             case "1":
-                show_register_user()
+                data = show_register_user()
+                if data:
+                    new_user = User(*data)
+                    users.append(new_user)
             case "2":
                 show_profiles()
             case "3":
@@ -25,8 +35,6 @@ def main():
 
 
 def show_main_menu():
-    figlet = Figlet()
-    figlet.setFont(font="graffiti")
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
 
@@ -39,7 +47,24 @@ def show_main_menu():
     print("6. Salir")
 
 
-def show_register_user(): ...
+def show_register_user():
+    main_title = figlet.renderText("Lovefinderrz")
+    print(main_title)
+
+    name = input("Nombre: ").strip().capitalize()
+    gender = input("Género (F/M): ").strip().upper()
+    orientation = (
+        input("Orientación sexual Hetero(H) u Otros(O): ").strip().upper()
+    )
+    birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
+    email = input("Email: ").strip()
+
+    confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()
+
+    if confirmation == "S":
+        return name, gender, orientation, birth_date, email
+
+    return None
 
 
 def show_profiles(): ...
