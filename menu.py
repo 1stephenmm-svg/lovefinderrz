@@ -3,10 +3,38 @@ from pyfiglet import Figlet
 figlet = Figlet()
 figlet.setFont(font="graffiti")
 
+CITIES = [
+    "Pasto",
+    "Ipiales",
+    "Túquerres",
+    "Tumaco",
+    "Cali",
+    "Tulcán",
+    "Quito",
+    "Bogotá",
+]
+
 
 def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
+
+
+def select_city():
+    for number, city in enumerate(CITIES, start=1):
+        print(f"{number}. {city}")
+
+    while True:
+        try:
+            option = int(input("Selecciona tu ciudad: "))
+        except ValueError:
+            print("Selecciona una opción válida.")
+            continue
+
+        if 1 <= option <= len(CITIES):
+            return CITIES[option - 1]
+
+        print("Selecciona una opción válida.")
 
 
 def show_main_menu():
@@ -33,7 +61,9 @@ def show_register_menu():
 
     confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()
 
+    city = select_city()
+
     if confirmation == "S":
-        return name, gender, orientation, birth_date, email
+        return name, gender, orientation, birth_date, email, city
 
     return None

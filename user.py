@@ -6,7 +6,7 @@ class User:
         orientation,
         birth_date,
         email,
-        city="Pasto",
+        city,
         balance=0,
     ):
         self.name = name
