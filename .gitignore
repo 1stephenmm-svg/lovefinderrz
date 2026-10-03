@@ -1,0 +1,5 @@
+pyproject.toml
+
+# Variables de entorno
+.venv
+.venv.*
