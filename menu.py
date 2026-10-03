@@ -4,9 +4,13 @@ figlet = Figlet()
 figlet.setFont(font="graffiti")
 
 
-def show_main_menu():
+def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
+
+
+def show_main_menu():
+    show_header()
 
     print("1. Regístrate")
     print("2. Mira perfiles")
@@ -17,8 +21,7 @@ def show_main_menu():
 
 
 def show_register_menu():
-    main_title = figlet.renderText("Lovefinderrz")
-    print(main_title)
+    show_header()
 
     name = input("Nombre: ").strip().capitalize()
     gender = input("Género (F/M): ").strip().upper()
