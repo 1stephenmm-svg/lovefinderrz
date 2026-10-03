@@ -25,5 +25,10 @@ class User:
         if gender not in ("F", "M"):
             raise ValueError("Opción inválida")
 
+    @staticmethod
+    def validate_sexual_orientation(orientation):
+        if orientation not in ("H", "O"):
+            raise ValueError("Opción inválida")
+
     def __str__(self):
         return self.name

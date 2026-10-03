@@ -30,6 +30,18 @@ def select_gender():
         print("Opción inválida. Ingresa F o M.")
 
 
+def select_sexual_orientation():
+    while True:
+        orientation = (
+            input("Orientación sexual Hetero(H) u Otros(O): ").strip().upper()
+        )
+
+        if orientation in ("H", "O"):
+            return orientation
+
+        print("Opción inválida. Ingresa H u O.")
+
+
 def select_city():
     for number, city in enumerate(CITIES, start=1):
         print(f"{number}. {city}")
@@ -63,9 +75,7 @@ def show_register_menu():
 
     name = input("Nombre: ").strip().capitalize()
     gender = select_gender()
-    orientation = (
-        input("Orientación sexual Hetero(H) u Otros(O): ").strip().upper()
-    )
+    orientation = select_sexual_orientation()
     birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
     email = input("Email: ").strip()
 
