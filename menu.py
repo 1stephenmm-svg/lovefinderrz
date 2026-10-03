@@ -1,4 +1,5 @@
 from pyfiglet import Figlet
+from validator_collection import checkers
 
 figlet = Figlet()
 figlet.setFont(font="graffiti")
@@ -42,6 +43,16 @@ def select_sexual_orientation():
         print("Opción inválida. Ingresa H u O.")
 
 
+def input_email():
+    while True:
+        email = input("Email: ").strip()
+
+        if checkers.is_email(email):
+            return email
+
+        print("Email inválido.")
+
+
 def select_city():
     for number, city in enumerate(CITIES, start=1):
         print(f"{number}. {city}")
@@ -77,11 +88,10 @@ def show_register_menu():
     gender = select_gender()
     orientation = select_sexual_orientation()
     birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
-    email = input("Email: ").strip()
+    email = input_email()
+    city = select_city()
 
     confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()
-
-    city = select_city()
 
     if confirmation == "S":
         return name, gender, orientation, birth_date, email, city

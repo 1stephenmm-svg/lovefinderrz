@@ -1,3 +1,6 @@
+from validator_collection import checkers
+
+
 class User:
     def __init__(
         self,
@@ -29,6 +32,11 @@ class User:
     def validate_sexual_orientation(orientation):
         if orientation not in ("H", "O"):
             raise ValueError("Opción inválida")
+
+    @staticmethod
+    def validate_email(email):
+        if not checkers.is_email(email):
+            raise ValueError("Email inválido")
 
     def __str__(self):
         return self.name
