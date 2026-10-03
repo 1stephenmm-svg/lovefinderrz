@@ -1,13 +1,10 @@
+from pyfiglet import Figlet
+
+
 def main():
 
     while True:
-        print("Lovefinderrz\n")
-        print("1. Regístrate")
-        print("2. Mira perfiles")
-        print("3. Da likes")
-        print("4. Mira tus matches")
-        print("5. Configuración")
-        print("6. Salir")
+        show_main_menu()
 
         option = input("Selecciona una opción: ").strip()
         match option:
@@ -25,6 +22,21 @@ def main():
                 break
             case _:
                 pass
+
+
+def show_main_menu():
+    figlet = Figlet()
+    figlet.setFont(font="graffiti")
+    main_title = figlet.renderText("Lovefinderrz")
+    print(main_title)
+
+    print("Lovefinderrz\n")
+    print("1. Regístrate")
+    print("2. Mira perfiles")
+    print("3. Da likes")
+    print("4. Mira tus matches")
+    print("5. Configuración")
+    print("6. Salir")
 
 
 def show_register_user(): ...
