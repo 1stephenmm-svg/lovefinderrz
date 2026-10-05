@@ -30,6 +30,8 @@ class User:
         self.is_active = True
         self.balance = balance
 
+    # Validations
+
     @staticmethod
     def validate_gender(gender):
         if gender not in ("F", "M"):
@@ -50,7 +52,15 @@ class User:
         if birth_date > date.today():
             raise ValueError("¿Vienes del futuro?")
 
+        if User.calculate_age(birth_date) < 18:
+            raise ValueError("Debes ser mayor de edad para registrarte.")
+
+    # Derived properties
+
+    @staticmethod
+    def calculate_age(birth_date):
         today = date.today()
+
         age = today.year - birth_date.year
 
         if (today.month, today.day) < (
@@ -59,8 +69,13 @@ class User:
         ):
             age -= 1
 
-        if age < 18:
-            raise ValueError("Debes ser mayor de edad para registrarte.")
+        return age
+
+    @property
+    def age(self):
+        return User.calculate_age(self.birth_date)
+
+    # Factory
 
     @classmethod
     def create(cls, name, gender, orientation, birth_date, email, city):
@@ -69,6 +84,8 @@ class User:
         return cls(
             name, gender, orientation, birth_date, email, city, location
         )
+
+    # Representation
 
     def __str__(self):
         return self.name
