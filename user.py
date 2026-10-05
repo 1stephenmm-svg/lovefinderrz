@@ -55,7 +55,7 @@ class User:
         if User.calculate_age(birth_date) < 18:
             raise ValueError("Debes ser mayor de edad para registrarte.")
 
-    # Derived properties
+    # Calculations
 
     @staticmethod
     def calculate_age(birth_date):
@@ -70,6 +70,8 @@ class User:
             age -= 1
 
         return age
+
+    # Properties
 
     @property
     def age(self):
