@@ -77,6 +77,15 @@ class User:
     def age(self):
         return User.calculate_age(self.birth_date)
 
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def email(self, email):
+        self.validate_email(email)
+        self._email = email
+
     # Factory
 
     @classmethod
