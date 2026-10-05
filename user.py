@@ -86,6 +86,17 @@ class User:
         self.validate_email(email)
         self._email = email
 
+    @property
+    def balance(self):
+        return self._balance
+
+    @balance.setter
+    def balance(self, balance):
+        if balance < 0:
+            raise ValueError("El balance no puede ser negativo.")
+
+        self._balance = balance
+
     # Factory
 
     @classmethod
