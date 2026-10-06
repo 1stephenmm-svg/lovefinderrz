@@ -12,6 +12,7 @@ FIELDS = [
     "longitude",
     "balance",
     "is_active",
+    "is_blocked",
 ]
 
 
@@ -35,8 +36,9 @@ def save_user(user):
                 "longitude": longitude,
                 "balance": user.balance,
                 "is_active": user.is_active,
+                "is_blocked": user.is_blocked,
             }
         )
 
-def load_users():
-    ...
+
+def load_users(): ...

@@ -29,8 +29,9 @@ class User:
         self.city = city
         self.email = email
         self.location = location
-        self.is_active = True
         self.balance = balance
+        self.is_active = True
+        self.is_blocked = False
 
     # Validations
 
