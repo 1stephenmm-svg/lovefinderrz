@@ -1,4 +1,5 @@
 from menu import show_main_menu, show_register_menu
+from storage import save_user
 from user import User
 
 users = []
@@ -16,6 +17,7 @@ def main():
                 if data:
                     new_user = User.create(*data)
                     users.append(new_user)
+                    save_user(new_user)
             case "2":
                 show_profiles()
             case "3":
