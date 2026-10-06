@@ -1,5 +1,9 @@
 import csv
 
+from datetime import date
+
+from user import User
+
 FILE = "data/users.csv"
 FIELDS = [
     "name",
@@ -41,4 +45,33 @@ def save_user(user):
         )
 
 
-def load_users(): ...
+def load_users():
+    users = []
+    
+    with open(FILE, "r", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            birth_date = date.fromisoformat(row["birth_date"])
+
+            location = (
+                float(row["latitude"]),
+                float(row["longitude"]),
+            )
+
+            user = User(
+                name=row["name"],
+                gender=row["gender"],
+                orientation=row["orientation"],
+                birth_date=birth_date,
+                email=row["email"],
+                city=row["city"],
+                location=location,
+                balance=int(row["balance"]),
+            )
+
+            user.is_active = row["is_active"] == "True"
+            user.is_blocked = row["is_blocked"] == "True"
+
+            users.append(user)
+
+    return users

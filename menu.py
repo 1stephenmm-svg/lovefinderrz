@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pyfiglet import Figlet
+from tabulate import tabulate
 from validator_collection import checkers
 
 figlet = Figlet()
@@ -22,6 +23,7 @@ def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
 
+
 def input_name():
     while True:
         name = input("Nombre: ").strip().capitalize()
@@ -34,6 +36,7 @@ def input_name():
 
         elif not name.isalpha():
             print("Tu nombre sólo puede contener letras.")
+
 
 def select_gender():
     while True:
@@ -139,3 +142,37 @@ def show_register_menu():
         return name, gender, orientation, birth_date, email, city
 
     return None
+
+
+def show_profiles(users, current_user):
+    profiles = []
+
+    show_header()
+
+    for user in users:
+        if user != current_user and user.is_active and not user.is_blocked:
+            profiles.append(
+                [
+                    user.name,
+                    f"{user.age} años",
+                    "Masculino" if user.gender == "M" else "Femenino",
+                    "Heterosexual" if user.orientation == "H" else "Otro",
+                    user.city,
+                ]
+            )
+
+    print(
+        tabulate(
+            profiles,
+            headers=[
+                "Nombre",
+                "Edad",
+                "Género",
+                "Orientación",
+                "Ubicación",
+            ],
+            tablefmt="grid",
+        )
+    )
+
+    input("\nPresiona Enter para volver al menú anterior...")

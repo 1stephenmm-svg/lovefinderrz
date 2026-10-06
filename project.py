@@ -1,11 +1,11 @@
-from menu import show_main_menu, show_register_menu
-from storage import save_user
+from menu import show_main_menu, show_register_menu, show_profiles
+from storage import save_user, load_users
 from user import User
-
-users = []
 
 
 def main():
+    users = load_users()
+    current_user = None
 
     while True:
         show_main_menu()
@@ -15,11 +15,11 @@ def main():
             case "1":
                 data = show_register_menu()
                 if data:
-                    new_user = User.create(*data)
-                    users.append(new_user)
-                    save_user(new_user)
+                    current_user = User.create(*data)
+                    users.append(current_user)
+                    save_user(current_user)
             case "2":
-                show_profiles()
+                show_profiles(users, current_user)
             case "3":
                 give_like()
             case "4":
@@ -30,9 +30,6 @@ def main():
                 break
             case _:
                 pass
-
-
-def show_profiles(): ...
 
 
 def give_like(): ...
