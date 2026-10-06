@@ -14,6 +14,7 @@ class User:
         birth_date,
         email,
         city,
+        location,
         balance=0,
     ):
         self.validate_gender(gender)
@@ -27,6 +28,7 @@ class User:
         self.birth_date = birth_date
         self.city = city
         self.email = email
+        self.location = location
         self.is_active = True
         self.balance = balance
 
@@ -104,7 +106,13 @@ class User:
         location = get_random_location(city)
 
         return cls(
-            name, gender, orientation, birth_date, email, city, location
+            name=name,
+            gender=gender,
+            orientation=orientation,
+            birth_date=birth_date,
+            email=email,
+            city=city,
+            location=location,
         )
 
     # Representation

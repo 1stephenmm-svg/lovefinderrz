@@ -14,7 +14,7 @@ def main():
             case "1":
                 data = show_register_menu()
                 if data:
-                    new_user = User(*data)
+                    new_user = User.create(*data)
                     users.append(new_user)
             case "2":
                 show_profiles()
