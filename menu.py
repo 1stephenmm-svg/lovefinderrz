@@ -181,4 +181,24 @@ def show_profiles(users, current_user):
 def show_preferences_menu():
     show_header()
 
-    # todo: add more preferences
+    orientation_preference = (
+        input(
+            "¿Quieres conocer gente sólo del sexo opuesto?\n"
+            + "Sí(S) Me da igual(cualquier tecla): "
+        )
+        .strip()
+        .upper()
+    )
+    same_orientation = orientation_preference == "S"
+
+    location_preference = (
+        input(
+            "¿Gente solo en tu ciudad?\n"
+            + "Sí(S) Me da igual(cualquier tecla): "
+        )
+        .strip()
+        .upper()
+    )
+    same_location = location_preference == "S"
+
+    return same_orientation, same_location

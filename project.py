@@ -5,7 +5,7 @@ from menu import (
     show_profiles,
     show_preferences_menu,
 )
-from storage import save_user, load_users
+from storage import save_user, load_users, save_users
 from user import User
 
 
@@ -32,6 +32,8 @@ def main():
                 show_profiles(compatible_users, current_user)
             case "3":
                 data = show_preferences_menu()
+                current_user.update_preferences(*data)
+                save_users(users)
             case "4":
                 show_matches()
             case "5":
