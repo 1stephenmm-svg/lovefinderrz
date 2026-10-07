@@ -119,8 +119,8 @@ def show_main_menu():
     show_header()
 
     print("1. Regístrate")
-    print("2. Tus preferencias")
-    print("3. Mira perfiles")
+    print("2. Mira perfiles")
+    print("3. Tus preferencias")
     print("4. Da likes")
     print("5. Mira tus matches")
     print("6. Salir")
