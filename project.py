@@ -1,4 +1,10 @@
-from menu import show_main_menu, show_register_menu, show_profiles
+from matching import find_compatible_users
+from menu import (
+    show_main_menu,
+    show_register_menu,
+    show_profiles,
+    show_preferences_menu,
+)
 from storage import save_user, load_users
 from user import User
 
@@ -19,13 +25,17 @@ def main():
                     users.append(current_user)
                     save_user(current_user)
             case "2":
-                show_profiles(users, current_user)
+                compatible_users = find_compatible_users(
+                    current_user,
+                    users,
+                )
+                show_profiles(compatible_users, current_user)
             case "3":
-                give_like()
+                data = show_preferences_menu()
             case "4":
                 show_matches()
             case "5":
-                show_settings()
+                give_like()
             case "6":
                 break
             case _:
@@ -36,9 +46,6 @@ def give_like(): ...
 
 
 def show_matches(): ...
-
-
-def show_settings(): ...
 
 
 if __name__ == "__main__":

@@ -32,6 +32,8 @@ class User:
         self.balance = balance
         self.is_active = True
         self.is_blocked = False
+        self.same_orientation = True
+        self.same_location = True
 
     # Validations
 
@@ -73,6 +75,12 @@ class User:
             age -= 1
 
         return age
+
+    # user actions
+
+    def update_preferences(self, same_orientation, same_location):
+        self.same_orientation = same_orientation
+        self.same_location = same_location
 
     # Properties
 

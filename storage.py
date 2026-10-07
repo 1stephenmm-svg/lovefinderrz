@@ -17,6 +17,8 @@ FIELDS = [
     "balance",
     "is_active",
     "is_blocked",
+    "same_orientation",
+    "same_location",
 ]
 
 
@@ -41,13 +43,15 @@ def save_user(user):
                 "balance": user.balance,
                 "is_active": user.is_active,
                 "is_blocked": user.is_blocked,
+                "same_orientation": user.same_orientation,
+                "same_location": user.same_location,
             }
         )
 
 
 def load_users():
     users = []
-    
+
     with open(FILE, "r", newline="") as file:
         reader = csv.DictReader(file)
         for row in reader:
@@ -71,7 +75,36 @@ def load_users():
 
             user.is_active = row["is_active"] == "True"
             user.is_blocked = row["is_blocked"] == "True"
+            user.same_orientation = row["same_orientation"] == "True"
+            user.same_location = row["same_location"] == "True"
 
             users.append(user)
 
     return users
+
+
+def save_users(users):
+    with open(FILE, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=FIELDS)
+        writer.writeheader()
+
+        for user in users:
+            latitude, longitude = user.location
+
+            writer.writerow(
+                {
+                    "name": user.name,
+                    "gender": user.gender,
+                    "orientation": user.orientation,
+                    "birth_date": user.birth_date,
+                    "city": user.city,
+                    "email": user.email,
+                    "latitude": latitude,
+                    "longitude": longitude,
+                    "balance": user.balance,
+                    "is_active": user.is_active,
+                    "is_blocked": user.is_blocked,
+                    "same_orientation": user.same_orientation,
+                    "same_location": user.same_location,
+                }
+            )

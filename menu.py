@@ -119,10 +119,10 @@ def show_main_menu():
     show_header()
 
     print("1. Regístrate")
-    print("2. Mira perfiles")
-    print("3. Da likes")
-    print("4. Mira tus matches")
-    print("5. Configuración")
+    print("2. Tus preferencias")
+    print("3. Mira perfiles")
+    print("4. Da likes")
+    print("5. Mira tus matches")
     print("6. Salir")
 
 
@@ -176,3 +176,9 @@ def show_profiles(users, current_user):
     )
 
     input("\nPresiona Enter para volver al menú anterior...")
+
+
+def show_preferences_menu():
+    show_header()
+
+    # todo: add more preferences
