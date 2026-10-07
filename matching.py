@@ -1,6 +1,9 @@
 def find_compatible_users(current_user, users):
     compatible_users = []
 
+    if not current_user:
+        return users
+
     for user in users:
         if user == current_user:
             continue
