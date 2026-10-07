@@ -150,16 +150,22 @@ def show_profiles(users, current_user):
     show_header()
 
     for user in users:
-        if user != current_user and user.is_active and not user.is_blocked:
-            profiles.append(
-                [
-                    user.name,
-                    f"{user.age} años",
-                    "Masculino" if user.gender == "M" else "Femenino",
-                    "Heterosexual" if user.orientation == "H" else "Otro",
-                    user.city,
-                ]
-            )
+        if user == current_user:
+            continue
+        if user.is_blocked:
+            continue
+        if not user.is_active:
+            continue
+        
+        profiles.append(
+            [
+                user.name,
+                f"{user.age} años",
+                "Masculino" if user.gender == "M" else "Femenino",
+                "Heterosexual" if user.orientation == "H" else "Otro",
+                user.city,
+            ]
+        )
 
     print(
         tabulate(
