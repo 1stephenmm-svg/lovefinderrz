@@ -15,6 +15,12 @@ def find_compatible_users(current_user, users):
             continue
 
         if (
+            current_user.same_orientation
+            and user.gender == current_user.gender
+        ):
+            continue
+
+        if (
             current_user.same_location
             and user.city != current_user.city
         ):
