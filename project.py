@@ -31,12 +31,12 @@ def main():
                 )
                 show_profiles(compatible_users, current_user)
             case "3":
-                if require_current_user(current_user):
+                if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
                     current_user.update_preferences(*data)
                     save_users(users)
             case "4":
-                if require_current_user(current_user):
+                if current_user := require_current_user(users, current_user):
                     show_matches()
             case "5":
                 break
@@ -46,13 +46,32 @@ def main():
 
 def show_matches(): ...
 
-def require_current_user(current_user):
-    if current_user is None:
-        print("Debes registrarte para acceder a esta opción.")
-        input("Presiona Enter para volver al menú anterior...")
-        return False
 
-    return True
+def require_current_user(users, current_user):
+    if current_user:
+        return current_user
+
+    answer = (
+        input(
+            "Necesitas registrarte para acceder a esta opción. "
+            "¿Quieres hacerlo ahora? (S/N): "
+        )
+        .strip()
+        .upper()
+    )
+
+    if answer != "S":
+        return None
+        
+    data = show_register_menu()
+    
+    if not data:
+        return None
+    
+    current_user = User.create(*data)
+    users.append(current_user)
+    save_user(current_user)
+    return current_user
 
 
 if __name__ == "__main__":
