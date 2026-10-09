@@ -19,11 +19,7 @@ def main():
         option = input("Selecciona una opción: ").strip()
         match option:
             case "1":
-                data = show_register_menu()
-                if data:
-                    current_user = User.create(*data)
-                    users.append(current_user)
-                    save_user(current_user)
+                current_user = register_user(users) or current_user
             case "2":
                 compatible_users = find_compatible_users(
                     current_user,
@@ -63,15 +59,19 @@ def require_current_user(users, current_user):
     if answer != "S":
         return None
         
+    return register_user(users)
+
+def register_user(users):
     data = show_register_menu()
-    
+
     if not data:
         return None
-    
-    current_user = User.create(*data)
-    users.append(current_user)
-    save_user(current_user)
-    return current_user
+
+    user = User.create(*data)
+    users.append(user)
+    save_user(user)
+
+    return user
 
 
 if __name__ == "__main__":
