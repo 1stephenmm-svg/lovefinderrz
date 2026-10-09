@@ -155,7 +155,7 @@ def show_profiles(users, current_user):
             continue
         if not user.is_active:
             continue
-        
+
         profiles.append(
             [
                 user.name,
@@ -166,19 +166,25 @@ def show_profiles(users, current_user):
             ]
         )
 
-    print(
-        tabulate(
-            profiles,
-            headers=[
-                "Nombre",
-                "Edad",
-                "Género",
-                "Orientación",
-                "Ubicación",
-            ],
-            tablefmt="grid",
+    if not profiles:
+        print(
+            "No encontré perfiles compatibles contigo."
+            "Intenta de nuevo más tarde o actualiza tus preferencias."
         )
-    )
+    else:
+        print(
+            tabulate(
+                profiles,
+                headers=[
+                    "Nombre",
+                    "Edad",
+                    "Género",
+                    "Orientación",
+                    "Ubicación",
+                ],
+                tablefmt="grid",
+            )
+        )
 
     input("\nPresiona Enter para volver al menú principal...")
 
@@ -197,10 +203,7 @@ def show_preferences_menu():
     same_orientation = orientation_preference == "S"
 
     location_preference = (
-        input(
-            "¿Gente solo en tu ciudad?\n"
-            + "Sí(S)/Me da igual(Enter): "
-        )
+        input("¿Gente solo en tu ciudad?\n" + "Sí(S)/Me da igual(Enter): ")
         .strip()
         .upper()
     )
