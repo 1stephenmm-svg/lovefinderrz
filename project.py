@@ -31,13 +31,16 @@ def main():
                 )
                 show_profiles(compatible_users, current_user)
             case "3":
-                data = show_preferences_menu()
-                current_user.update_preferences(*data)
-                save_users(users)
+                if require_current_user(current_user):
+                    data = show_preferences_menu()
+                    current_user.update_preferences(*data)
+                    save_users(users)
             case "4":
-                show_matches()
+                if require_current_user(current_user):
+                    show_matches()
             case "5":
-                give_like()
+                if require_current_user(current_user):
+                    give_like()
             case "6":
                 break
             case _:
@@ -48,6 +51,14 @@ def give_like(): ...
 
 
 def show_matches(): ...
+
+def require_current_user(current_user):
+    if current_user is None:
+        print("Debes registrarte para acceder a esta opción.")
+        input("Presiona Enter para volver al menú anterior...")
+        return False
+
+    return True
 
 
 if __name__ == "__main__":
