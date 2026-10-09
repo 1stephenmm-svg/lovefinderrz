@@ -180,7 +180,7 @@ def show_profiles(users, current_user):
         )
     )
 
-    input("\nPresiona Enter para volver al menú anterior...")
+    input("\nPresiona Enter para volver al menú principal...")
 
 
 def show_preferences_menu():
@@ -189,7 +189,7 @@ def show_preferences_menu():
     orientation_preference = (
         input(
             "¿Quieres conocer gente sólo del sexo opuesto?\n"
-            + "Sí(S) Me da igual(cualquier tecla): "
+            + "Sí(S)/Me da igual(Enter): "
         )
         .strip()
         .upper()
@@ -199,7 +199,7 @@ def show_preferences_menu():
     location_preference = (
         input(
             "¿Gente solo en tu ciudad?\n"
-            + "Sí(S) Me da igual(cualquier tecla): "
+            + "Sí(S)/Me da igual(Enter): "
         )
         .strip()
         .upper()

@@ -48,6 +48,15 @@ def save_user(user):
             }
         )
 
+    input(
+        f"\n¡TE DOY LA BIENVENIDA {user} A LOVEFINDERRZ!\n"
+        + "Ahora puedes:\n"
+        + "- mirar perfiles.\n"
+        + "- cambiar tus preferencias.\n"
+        + "- mirar tus matches."
+        + "\nPresiona Enter para volver al menú principal..."
+    )
+
 
 def load_users():
     users = []
