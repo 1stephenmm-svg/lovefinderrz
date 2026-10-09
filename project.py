@@ -39,15 +39,9 @@ def main():
                 if require_current_user(current_user):
                     show_matches()
             case "5":
-                if require_current_user(current_user):
-                    give_like()
-            case "6":
                 break
             case _:
                 pass
-
-
-def give_like(): ...
 
 
 def show_matches(): ...
