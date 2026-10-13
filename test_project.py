@@ -2,10 +2,22 @@ import pytest
 
 from datetime import date
 
+from location import get_random_location
 from matching import find_compatible_users
 from project import register_user
 from project import User
 from storage import load_users, save_users
+
+
+def make_user():
+    return User.create(
+        name="cliente",
+        gender="M",
+        orientation="H",
+        birth_date=date(1990, 5, 15),
+        email="cliente@example.com",
+        city="Pasto",
+    )
 
 
 def test_register_user_valid():
@@ -51,27 +63,13 @@ def test_register_user_invalid_age():
 
 
 def test_user_age_calculation():
-    user = User.create(
-        "cliente",
-        "M",
-        "H",
-        date(1990, 5, 15),
-        "cliente@example.com",
-        "Pasto",
-    )
+    user = make_user()
 
     assert user.age == 36  # in 2026, after may 15
 
 
 def test_exclude_own_profile():
-    current_user = User.create(
-        "cliente",
-        "M",
-        "H",
-        date(1990, 5, 15),
-        "cliente@example.com",
-        "Pasto",
-    )
+    current_user = make_user()
     users = [current_user]
 
     matches = find_compatible_users(current_user, users)
@@ -82,16 +80,8 @@ def test_exclude_own_profile():
 def test_save_and_load_user():
     file_path = "data/test_users.csv"
 
-    user = User(
-        name="cliente",
-        gender="M",
-        orientation="H",
-        birth_date=date(1990, 5, 15),
-        email="cliente@example.com",
-        city="Pasto",
-        location=(1.2136, -77.2811),
-        balance=100,
-    )
+    user = make_user()
+    user.location = get_random_location(user.city)
 
     save_users([user], file_path)
     users = load_users(file_path)
