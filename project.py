@@ -42,15 +42,30 @@ def main():
 
 def show_matches(): ...
 
-def register_user(users):
+
+def register_user_from_menu(users):
     data = show_register_menu()
 
     if not data:
         return None
 
-    user = User.create(*data)
-    users.append(user)
+    user = register_user(users, *data)
     save_user(user)
+
+    return user
+
+
+def register_user(users, name, gender, orientation, birth_date, email, city):
+    user = User.create(
+        name,
+        gender,
+        orientation,
+        birth_date,
+        email,
+        city,
+    )
+
+    users.append(user)
 
     return user
 
@@ -70,8 +85,9 @@ def require_current_user(users, current_user):
 
     if answer != "S":
         return None
-        
+
     return register_user(users)
+
 
 if __name__ == "__main__":
     main()
