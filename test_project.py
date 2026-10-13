@@ -5,6 +5,7 @@ from datetime import date
 from matching import find_compatible_users
 from project import register_user
 from project import User
+from storage import load_users, save_users
 
 
 def test_register_user_valid():
@@ -76,3 +77,35 @@ def test_exclude_own_profile():
     matches = find_compatible_users(current_user, users)
 
     assert current_user not in matches
+
+
+def test_save_and_load_user():
+    file_path = "data/test_users.csv"
+
+    user = User(
+        name="cliente",
+        gender="M",
+        orientation="H",
+        birth_date=date(1990, 5, 15),
+        email="cliente@example.com",
+        city="Pasto",
+        location=(1.2136, -77.2811),
+        balance=100,
+    )
+
+    save_users([user], file_path)
+    users = load_users(file_path)
+
+    assert len(users) == 1
+    assert users[0].name == user.name
+    assert users[0].gender == "M"
+    assert users[0].orientation == "H"
+    assert users[0].birth_date == user.birth_date
+    assert users[0].city == "Pasto"
+    assert users[0].email == user.email
+    assert users[0].location == user.location
+    assert users[0].balance == user.balance
+    assert users[0].is_active
+    assert not users[0].is_blocked
+    assert users[0].same_orientation
+    assert users[0].same_location

@@ -58,10 +58,10 @@ def save_user(user):
     )
 
 
-def load_users():
+def load_users(file_path=FILE):
     users = []
 
-    with open(FILE, "r", newline="") as file:
+    with open(file_path, "r", newline="") as file:
         reader = csv.DictReader(file)
         for row in reader:
             birth_date = date.fromisoformat(row["birth_date"])
@@ -92,8 +92,8 @@ def load_users():
     return users
 
 
-def save_users(users):
-    with open(FILE, "w", newline="", encoding="utf-8") as file:
+def save_users(users, file_path=FILE):
+    with open(file_path, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDS)
         writer.writeheader()
 
