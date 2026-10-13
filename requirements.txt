@@ -1,4 +1,5 @@
 pyfiglet
+pytest
 requests
 tabulate
 validator-collection
