@@ -46,3 +46,16 @@ def test_register_user_invalid_age():
             "cliente@example.com",
             "Pasto",
         )
+
+
+def test_user_age_calculation():
+    user = User.create(
+        "cliente",
+        "M",
+        "H",
+        date(1990, 5, 15),
+        "cliente@example.com",
+        "Pasto",
+    )
+
+    assert user.age == 36 # in 2026, after may 15
