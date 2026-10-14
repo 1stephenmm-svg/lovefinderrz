@@ -1,5 +1,7 @@
 # Lovefinderrz
 
+**Version:** `v0.1.0` · Early development
+
 #### Video Demo: [URL pending]
 
 #### Description

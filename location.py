@@ -4,7 +4,7 @@ import requests
 from data import DEFAULT_COORDINATES
 
 URL = "https://nominatim.openstreetmap.org/search"
-HEADERS = {"User-Agent": "Lovefinderrz/1.0(1stephenmm@gmail.com)"}
+HEADERS = {"User-Agent": "Lovefinderrz/0.1.0 (1stephenmm@gmail.com)"}
 
 
 def get_city_area(city):
