@@ -4,19 +4,10 @@ from pyfiglet import Figlet
 from tabulate import tabulate
 from validator_collection import checkers
 
+from data import CITIES
+
 figlet = Figlet()
 figlet.setFont(font="graffiti")
-
-CITIES = [
-    "Pasto, Nariño, Colombia",
-    "Ipiales, Nariño, Colombia",
-    "Túquerres, Nariño, Colombia",
-    "Tumaco, Nariño, Colombia",
-    "Cali, Valle del Cauca, Colombia",
-    "Tulcán, Carchi, Ecuador",
-    "Quito, Pichincha, Ecuador",
-    "Bogotá D.C., Bogotá, Colombia",
-]
 
 
 def show_header():
