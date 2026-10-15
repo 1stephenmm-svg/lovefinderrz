@@ -51,8 +51,6 @@ ______________________________________________________________________
 - **Nominatim / OpenStreetMap:** geolocation.
 - **Git and GitHub:** version control.
 
-Once the first version is complete, the project could evolve into a cross-platform app with a relational database, a REST API developed using Django REST Framework or FastAPI, and a mobile interface built with Flutter. I’m also considering adding authentication, likes, matches, and features related to location and scheduling meetups.
-
-In the long term, I plan to explore a cloud architecture that allows for the gradual deployment and scaling of the system’s components.
+Future development may include a relational database, authentication, likes and matches, location-based features, and meetup scheduling. The project could also evolve into a across-platform mobile application using Flutter, supported by a REST API built with Django REST Framework or FastAPI. LLM Integration could help interpret natural-language preferences and explain matching results, while data analytics capabilities could reveal user preference patterns. Eventually, I plan to explore a cloud architecture that supports the gradual deployment, integration, and scaling of the system’s components.
 
 Lovefinderrz is, therefore, a project focused on applied learning and incremental development: consolidating Python fundamentals, practicing sound design decisions, and building a maintainable foundation that can grow into a more comprehensive software solution.
