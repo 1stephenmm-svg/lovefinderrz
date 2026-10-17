@@ -19,7 +19,7 @@ def main():
         option = input("Selecciona una opción: ").strip()
         match option:
             case "1":
-                current_user = register_user(users) or current_user
+                current_user = register_user_from_menu(users) or current_user
             case "2":
                 compatible_users = find_compatible_users(
                     current_user,
