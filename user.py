@@ -8,6 +8,7 @@ from location import get_random_location
 class User:
     def __init__(
         self,
+        id,
         name,
         gender,
         orientation,
@@ -22,6 +23,7 @@ class User:
         self.validate_email(email)
         self.validate_birth_date(birth_date)
 
+        self.id = id
         self.name = name
         self.gender = gender
         self.orientation = orientation
@@ -111,10 +113,11 @@ class User:
     # Factory
 
     @classmethod
-    def create(cls, name, gender, orientation, birth_date, email, city):
+    def create(cls, id, name, gender, orientation, birth_date, email, city):
         location = get_random_location(city)
 
         return cls(
+            id=id,
             name=name,
             gender=gender,
             orientation=orientation,

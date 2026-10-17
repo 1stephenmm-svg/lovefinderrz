@@ -6,6 +6,7 @@ from user import User
 
 FILE = "data/users.csv"
 FIELDS = [
+    "id",
     "name",
     "gender",
     "orientation",
@@ -32,6 +33,7 @@ def save_user(user):
 
         writer.writerow(
             {
+                "id": user.id,
                 "name": user.name,
                 "gender": user.gender,
                 "orientation": user.orientation,
@@ -72,6 +74,7 @@ def load_users(file_path=FILE):
             )
 
             user = User(
+                id=int(row["id"]),
                 name=row["name"],
                 gender=row["gender"],
                 orientation=row["orientation"],
@@ -92,6 +95,13 @@ def load_users(file_path=FILE):
     return users
 
 
+def get_next_user_id(users=None):
+    if not users:
+        return 1
+
+    return max(user.id for user in users) + 1
+
+
 def save_users(users, file_path=FILE):
     with open(file_path, "w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=FIELDS)
@@ -102,6 +112,7 @@ def save_users(users, file_path=FILE):
 
             writer.writerow(
                 {
+                    "id": user.id,
                     "name": user.name,
                     "gender": user.gender,
                     "orientation": user.orientation,

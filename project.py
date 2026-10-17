@@ -5,7 +5,7 @@ from menu import (
     show_profiles,
     show_preferences_menu,
 )
-from storage import save_user, load_users, save_users
+from storage import save_user, load_users, save_users, get_next_user_id
 from user import User
 
 
@@ -56,7 +56,10 @@ def register_user_from_menu(users):
 
 
 def register_user(users, name, gender, orientation, birth_date, email, city):
+    user_id = get_next_user_id(users)
+
     user = User.create(
+        user_id,
         name,
         gender,
         orientation,
