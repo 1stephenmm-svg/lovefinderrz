@@ -1,6 +1,6 @@
 import csv
 
-from datetime import date
+from datetime import date, datetime
 
 from user import User
 
@@ -20,6 +20,7 @@ FIELDS = [
     "is_blocked",
     "same_orientation",
     "same_location",
+    "created_at",
 ]
 
 
@@ -37,7 +38,7 @@ def save_user(user):
                 "name": user.name,
                 "gender": user.gender,
                 "orientation": user.orientation,
-                "birth_date": user.birth_date,
+                "birth_date": user.birth_date.isoformat(),
                 "city": user.city,
                 "email": user.email,
                 "latitude": latitude,
@@ -47,6 +48,7 @@ def save_user(user):
                 "is_blocked": user.is_blocked,
                 "same_orientation": user.same_orientation,
                 "same_location": user.same_location,
+                "created_at": user.created_at.isoformat(),
             }
         )
 
@@ -67,6 +69,7 @@ def load_users(file_path=FILE):
         reader = csv.DictReader(file)
         for row in reader:
             birth_date = date.fromisoformat(row["birth_date"])
+            created_at = datetime.fromisoformat(row["created_at"])
 
             location = (
                 float(row["latitude"]),
@@ -83,6 +86,7 @@ def load_users(file_path=FILE):
                 city=row["city"],
                 location=location,
                 balance=int(row["balance"]),
+                created_at=created_at,
             )
 
             user.is_active = row["is_active"] == "True"
@@ -126,5 +130,6 @@ def save_users(users, file_path=FILE):
                     "is_blocked": user.is_blocked,
                     "same_orientation": user.same_orientation,
                     "same_location": user.same_location,
+                    "created_at": user.created_at,
                 }
             )

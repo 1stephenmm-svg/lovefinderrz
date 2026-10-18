@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from validator_collection import checkers
 
@@ -17,6 +17,7 @@ class User:
         city,
         location,
         balance=0,
+        created_at=None,
     ):
         self.validate_gender(gender)
         self.validate_sexual_orientation(orientation)
@@ -36,6 +37,7 @@ class User:
         self.is_blocked = False
         self.same_orientation = True
         self.same_location = True
+        self.created_at = created_at or datetime.now()
 
     # Validations
 
