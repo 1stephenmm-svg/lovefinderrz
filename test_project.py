@@ -1,14 +1,20 @@
 import pytest
 
-from datetime import date
+from datetime import date, datetime
 
 from matching import find_compatible_users
 from project import register_user
 from project import User
-from storage import load_users, save_users
+from storage import load_users, save_users, get_next_user_id
+
+
+@pytest.fixture
+def test_file(tmp_path):
+    return tmp_path / "test_users.csv"
 
 
 def make_user(
+    test_file,
     name="cliente",
     gender="M",
     orientation="H",
@@ -17,6 +23,7 @@ def make_user(
     city="Pasto",
 ):
     return User.create(
+        id=get_next_user_id(test_file),
         name=name,
         gender=gender,
         orientation=orientation,
@@ -26,7 +33,40 @@ def make_user(
     )
 
 
+def clear_file(test_file, users=None):
+    if users is None:
+        users = []
+
+    save_users(users, test_file)
+
+
 # user.py
+
+
+def test_created_at_is_assigned_automatically(test_file):
+    clear_file(test_file)
+
+    user = make_user(test_file)
+
+    assert isinstance(user.created_at, datetime)
+
+
+def test_autoincrement_with_three_users(test_file):
+    clear_file(test_file)
+    
+    users = []
+
+    for name in ["Stephen", "Nova", "Korner"]:
+        user = make_user(test_file, name=name)
+        user.id = get_next_user_id(file_path=test_file)
+        # user.name = name
+        users.append(user)
+
+        save_users(users, test_file)
+
+    loaded_users = load_users(test_file)
+
+    assert [user.id for user in loaded_users] == [1, 2, 3]
 
 
 def test_register_user_valid():
@@ -57,22 +97,27 @@ def test_register_user_valid():
     assert user.same_location
 
 
-def test_register_user_invalid_age():
+def test_register_user_invalid_age(test_file):
+    clear_file(test_file)
+
     with pytest.raises(
         ValueError, match="Debes ser mayor de edad para registrarte."
     ):
         User.create(
-            "cliente",
-            "M",
-            "H",
-            date(2016, 10, 13),
-            "cliente@example.com",
-            "Pasto",
+            id=get_next_user_id(file_path=test_file),
+            name="cliente",
+            gender="M",
+            orientation="H",
+            birth_date=date(2016, 10, 13),
+            email="cliente@example.com",
+            city="Pasto",
         )
 
 
-def test_user_age_calculation():
-    user = make_user()
+def test_user_age_calculation(test_file):
+    clear_file(test_file)
+
+    user = make_user(test_file)
 
     assert user.age == 36  # in 2026, after may 15
 
@@ -80,13 +125,13 @@ def test_user_age_calculation():
 # storage.py
 
 
-def test_save_and_load_user():
-    file_path = "data/test_users.csv"
+def test_save_and_load_user(test_file):
+    clear_file(test_file)
 
-    user = make_user()
+    user = make_user(test_file)
 
-    save_users([user], file_path)
-    users = load_users(file_path)
+    save_users([user], test_file)
+    users = load_users(test_file)
 
     assert len(users) == 1
     assert users[0].name == user.name
@@ -106,8 +151,10 @@ def test_save_and_load_user():
 # matching.py
 
 
-def test_exclude_own_profile():
-    current_user = make_user()
+def test_exclude_own_profile(test_file):
+    clear_file(test_file)
+
+    current_user = make_user(test_file)
     users = [current_user]
 
     matches = find_compatible_users(current_user, users)
@@ -115,10 +162,13 @@ def test_exclude_own_profile():
     assert current_user not in matches
 
 
-def test_excludes_inactive_and_blocked_users():
-    current_user = make_user()
+def test_excludes_inactive_and_blocked_users(test_file):
+    clear_file(test_file)
+
+    current_user = make_user(test_file)
 
     inactive_user = make_user(
+        test_file,
         name="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
@@ -128,6 +178,7 @@ def test_excludes_inactive_and_blocked_users():
     inactive_user.location = (1.19, -77.25)
 
     blocked_user = make_user(
+        test_file,
         name="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="F",
@@ -143,12 +194,15 @@ def test_excludes_inactive_and_blocked_users():
     assert blocked_user not in matches
 
 
-def test_filters_by_preferences():
-    current_user = make_user()
+def test_filters_by_preferences(test_file):
+    clear_file(test_file)
+
+    current_user = make_user(test_file)
     current_user.same_location = True
     current_user.same_orientation = True
 
     compatible_user = make_user(
+        test_file,
         name="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
@@ -157,6 +211,7 @@ def test_filters_by_preferences():
     compatible_user.location = (1.19, -77.25)
 
     different_city = make_user(
+        test_file,
         name="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         city="Bogotá D.C.",
@@ -165,6 +220,7 @@ def test_filters_by_preferences():
     )
 
     different_orientation = make_user(
+        test_file,
         name="y_un_cliente_mas",
         email="y_un_cliente_mas@example.com",
         gender="M",
@@ -184,12 +240,15 @@ def test_filters_by_preferences():
     assert result == [compatible_user]
 
 
-def test_returns_empty_list_when_no_matches():
-    current_user = make_user()
+def test_returns_empty_list_when_no_matches(test_file):
+    clear_file(test_file)
+
+    current_user = make_user(test_file)
     current_user.same_location = True
     current_user.same_orientation = True
 
     other_user = make_user(  # different city
+        test_file,
         name="otro_cliente",
         email="otro_cliente@example.com",
         city="Bogotá D.C.",
@@ -198,6 +257,7 @@ def test_returns_empty_list_when_no_matches():
     )
 
     another_user = make_user(  # different gender and sexual orientation
+        test_file,
         name="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="M",
