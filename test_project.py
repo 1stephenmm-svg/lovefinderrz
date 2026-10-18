@@ -129,23 +129,26 @@ def test_save_and_load_user(test_file):
     clear_file(test_file)
 
     user = make_user(test_file)
-
     save_users([user], test_file)
+
     users = load_users(test_file)
 
     assert len(users) == 1
-    assert users[0].name == user.name
-    assert users[0].gender == "M"
-    assert users[0].orientation == "H"
-    assert users[0].birth_date == user.birth_date
-    assert users[0].city == "Pasto"
-    assert users[0].email == user.email
-    assert users[0].location == user.location
-    assert users[0].balance == user.balance
-    assert users[0].is_active
-    assert not users[0].is_blocked
-    assert users[0].same_orientation
-    assert users[0].same_location
+
+    loaded_user = users[0]
+
+    assert loaded_user.name == user.name
+    assert loaded_user.gender == "M"
+    assert loaded_user.orientation == "H"
+    assert loaded_user.birth_date == user.birth_date
+    assert loaded_user.city == "Pasto"
+    assert loaded_user.email == user.email
+    assert loaded_user.location == user.location
+    assert loaded_user.balance == user.balance
+    assert loaded_user.is_active
+    assert not loaded_user.is_blocked
+    assert loaded_user.same_orientation
+    assert loaded_user.same_location
 
 
 # matching.py
