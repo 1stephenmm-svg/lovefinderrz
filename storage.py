@@ -99,7 +99,9 @@ def load_users(file_path=FILE):
     return users
 
 
-def get_next_user_id(users=None):
+def get_next_user_id(users=None, file_path=FILE):
+    users = load_users(file_path)
+    
     if not users:
         return 1
 
