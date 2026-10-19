@@ -2,10 +2,9 @@ from datetime import datetime
 
 from pyfiglet import Figlet
 from tabulate import tabulate
-from user import User
-from validator_collection import checkers
 
 from data import CITIES
+from user import User
 
 figlet = Figlet()
 figlet.setFont(font="graffiti")
@@ -39,28 +38,33 @@ def select_gender():
     while True:
         gender = input("Género (F/M): ").strip().upper()
 
-        if gender in ("F", "M"):
-            return gender
+        try:
+            User.validate_gender(gender)
+        except ValueError as error:
+            print(error)
+            continue
 
-        print("Opción inválida. Ingresa F o M.")
+        return gender
 
 
 def select_sexual_orientation():
     while True:
+
         orientation = (
             input("Orientación sexual Hetero(H) u Otros(O): ").strip().upper()
         )
 
-        if orientation in ("H", "O"):
-            return orientation
+        try:
+            User.validate_sexual_orientation(orientation)
+        except ValueError as error:
+            print(error)
+            continue
 
-        print("Opción inválida. Ingresa H u O.")
+        return orientation
 
 
 def input_birth_date():
     while True:
-        today = datetime.now().date()
-
         birth_date = input("Fecha de nacimiento (DD/MM/YYYY): ").strip()
 
         try:
@@ -69,17 +73,10 @@ def input_birth_date():
             print("Fecha inválida.")
             continue
 
-        if birth_date > today:
-            print("¿Vienes del futuro?")
-            continue
-
-        age = today.year - birth_date.year
-
-        if (today.month, today.day) < (birth_date.month, birth_date.day):
-            age -= 1
-
-        if age < 18:
-            print("Debes ser mayor de edad para poder registrarte.")
+        try:
+            User.validate_birth_date(birth_date)
+        except ValueError as error:
+            print(error)
             continue
 
         return birth_date
@@ -89,10 +86,13 @@ def input_email():
     while True:
         email = input("Email: ").strip()
 
-        if checkers.is_email(email):
-            return email
+        try:
+            User.validate_email(email)
+        except ValueError as error:
+            print(error)
+            continue
 
-        print("Email inválido.")
+        return email
 
 
 def select_city():

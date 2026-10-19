@@ -64,12 +64,12 @@ class User:
     @staticmethod
     def validate_gender(gender):
         if gender not in ("F", "M"):
-            raise ValueError("Opción inválida")
+            raise ValueError("Opción inválida. Ingresa F o M.")
 
     @staticmethod
     def validate_sexual_orientation(orientation):
         if orientation not in ("H", "O"):
-            raise ValueError("Opción inválida")
+            raise ValueError("Opción inválida. Ingresa H u O.")
 
     @staticmethod
     def validate_email(email):
