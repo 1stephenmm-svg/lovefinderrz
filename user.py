@@ -84,6 +84,9 @@ class User:
         if User.calculate_age(birth_date) < 18:
             raise ValueError("Debes ser mayor de edad para registrarte.")
 
+        if birth_date.year <= 1900:
+            raise ValueError("¿Eres el hijo famoso de Enoc?")
+
     # Calculations
 
     @staticmethod
