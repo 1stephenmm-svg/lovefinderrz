@@ -2,7 +2,7 @@ import csv
 
 from datetime import date, datetime
 
-from user import User
+from user import Client, User
 
 FILE = "data/users.csv"
 FIELDS = [
@@ -76,7 +76,7 @@ def load_users(file_path=FILE):
                 float(row["longitude"]),
             )
 
-            user = User(
+            user = Client(
                 id=int(row["id"]),
                 nickname=row["nickname"],
                 gender=row["gender"],

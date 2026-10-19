@@ -1,12 +1,12 @@
 from matching import find_compatible_users
 from menu import (
     show_main_menu,
-    show_register_menu,
     show_profiles,
     show_preferences_menu,
+    show_register_menu,
 )
-from storage import save_user, load_users, save_users, get_next_user_id
-from user import User
+from storage import get_next_user_id, load_users, save_user, save_users
+from user import Client, User 
 
 
 def main():
@@ -60,7 +60,7 @@ def register_user(
 ):
     user_id = get_next_user_id(users)
 
-    user = User.create(
+    user = Client.create(
         user_id,
         nickname,
         gender,

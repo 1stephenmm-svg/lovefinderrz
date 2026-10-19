@@ -2,10 +2,15 @@ import pytest
 
 from datetime import date, datetime
 
-from matching import find_compatible_users
-from project import register_user
-from project import User
-from storage import load_users, save_users, get_next_user_id
+from project import (
+    Client,
+    User,
+    find_compatible_users,
+    get_next_user_id,
+    load_users,
+    register_user,
+    save_users,
+)
 
 
 @pytest.fixture
@@ -22,7 +27,7 @@ def make_user(
     email="cliente@example.com",
     city="Pasto",
 ):
-    return User.create(
+    return Client.create(
         id=get_next_user_id(test_file),
         nickname=nickname,
         gender=gender,
@@ -102,7 +107,7 @@ def test_register_user_invalid_age(test_file):
     with pytest.raises(
         ValueError, match="Debes ser mayor de edad para registrarte."
     ):
-        User.create(
+        Client.create(
             id=get_next_user_id(file_path=test_file),
             nickname="cliente",
             gender="M",

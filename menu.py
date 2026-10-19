@@ -4,7 +4,7 @@ from pyfiglet import Figlet
 from tabulate import tabulate
 
 from data import CITIES
-from user import User
+from user import Client, User
 
 figlet = Figlet()
 figlet.setFont(font="graffiti")
@@ -20,7 +20,7 @@ def input_nickname(users):
         candidate = input("¿Tu Nickname?: ").strip().lower()
 
         try:
-            User.validate_nickname(candidate)
+            Client.validate_nickname(candidate)
         except ValueError as error:
             print(error)
             continue
@@ -39,7 +39,7 @@ def select_gender():
         gender = input("Género (F/M): ").strip().upper()
 
         try:
-            User.validate_gender(gender)
+            Client.validate_gender(gender)
         except ValueError as error:
             print(error)
             continue
@@ -55,7 +55,7 @@ def select_sexual_orientation():
         )
 
         try:
-            User.validate_sexual_orientation(orientation)
+            Client.validate_sexual_orientation(orientation)
         except ValueError as error:
             print(error)
             continue
@@ -74,7 +74,7 @@ def input_birth_date():
             continue
 
         try:
-            User.validate_birth_date(birth_date)
+            Client.validate_birth_date(birth_date)
         except ValueError as error:
             print(error)
             continue
@@ -87,7 +87,7 @@ def input_email():
         email = input("Email: ").strip()
 
         try:
-            User.validate_email(email)
+            Client.validate_email(email)
         except ValueError as error:
             print(error)
             continue
