@@ -1,4 +1,4 @@
-id,name,gender,orientation,birth_date,city,email,latitude,longitude,balance,is_active,is_blocked,same_orientation,same_location,created_at
+id,nickname,gender,orientation,birth_date,city,email,latitude,longitude,balance,is_active,is_blocked,same_orientation,same_location,created_at
 0,admin,M,H,1982-09-06,"Pasto, Nariño, Colombia",admin@example.com,1.2187505517048605,-77.29031852277268,0,True,False,True,True,2026-10-14T01:00:22.621445
 1,Cuasipundio,M,O,1970-01-01,"Ipiales, Nariño, Colombia",cuasipundio@gerchan.com,0.5899033552928232,-77.37465979830091,0,True,False,True,True,2026-10-14T01:00:22.621445
 2,Ana,F,H,2001-12-01,"Pasto, Nariño, Colombia",ana@mail.com,1.1948707562614433,-77.25042197209488,0,True,False,True,True,2026-10-14T01:00:22.621445
@@ -28,3 +28,4 @@ id,name,gender,orientation,birth_date,city,email,latitude,longitude,balance,is_a
 26,Emily,F,H,2007-12-03,"Túquerres, Nariño, Colombia",emily@mail.org,1.2549479818462579,-77.64980716580146,0,True,False,True,True,2026-10-14T01:00:22.621445
 27,Ruben,M,H,1995-11-11,"Tumaco, Nariño, Colombia",ruben@mail.com,2.20772350562513,-78.40649030132133,0,True,False,True,True,2026-10-14T01:00:22.621445
 28,Luis,M,H,1980-01-01,"Cali, Valle del Cauca, Colombia",luis@mail.edu.co,3.3285949042438734,-76.68696001966936,0,True,False,True,True,2026-10-14T01:00:22.621445
+29,stephen.1-23,M,H,1982-09-06,"Pasto, Nariño, Colombia",as@g.com,1.1833655229883322,-77.25088766883596,0,True,False,True,True,2026-10-19T09:06:26.808428

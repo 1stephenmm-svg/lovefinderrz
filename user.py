@@ -1,3 +1,5 @@
+import re
+
 from datetime import date, datetime
 
 from validator_collection import checkers
@@ -9,7 +11,7 @@ class User:
     def __init__(
         self,
         id,
-        name,
+        nickname,
         gender,
         orientation,
         birth_date,
@@ -19,13 +21,14 @@ class User:
         balance=0,
         created_at=None,
     ):
+        self.validate_nickname(nickname)
         self.validate_gender(gender)
         self.validate_sexual_orientation(orientation)
         self.validate_email(email)
         self.validate_birth_date(birth_date)
 
         self.id = id
-        self.name = name
+        self.nickname = nickname
         self.gender = gender
         self.orientation = orientation
         self.birth_date = birth_date
@@ -40,6 +43,23 @@ class User:
         self.created_at = created_at or datetime.now()
 
     # Validations
+
+    @staticmethod
+    def validate_nickname(nickname):
+        if not 3 <= len(nickname) <= 20:
+            raise ValueError(
+                "Debe tener entre 3 y 20 caracteres de longitud."
+            )
+        if not re.fullmatch(r"[A-Za-z0-9._-]+", nickname):
+            raise ValueError(
+                "Sólo puede contener letras, numeros, puntos o guiones."
+            )
+        if not re.match(r"[A-Za-z0-9]+", nickname) or not re.search(
+            r"[A-Za-z0-9]+$", nickname
+        ):
+            raise ValueError(
+                "Tu nickname debe comenzar y terminar con letras o números."
+            )
 
     @staticmethod
     def validate_gender(gender):
@@ -115,12 +135,14 @@ class User:
     # Factory
 
     @classmethod
-    def create(cls, id, name, gender, orientation, birth_date, email, city):
+    def create(
+        cls, id, nickname, gender, orientation, birth_date, email, city
+    ):
         location = get_random_location(city)
 
         return cls(
             id=id,
-            name=name,
+            nickname=nickname,
             gender=gender,
             orientation=orientation,
             birth_date=birth_date,
@@ -132,4 +154,4 @@ class User:
     # Representation
 
     def __str__(self):
-        return self.name
+        return self.nickname

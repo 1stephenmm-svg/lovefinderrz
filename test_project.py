@@ -15,7 +15,7 @@ def test_file(tmp_path):
 
 def make_user(
     test_file,
-    name="cliente",
+    nickname="cliente",
     gender="M",
     orientation="H",
     birth_date=date(1990, 5, 15),
@@ -24,7 +24,7 @@ def make_user(
 ):
     return User.create(
         id=get_next_user_id(test_file),
-        name=name,
+        nickname=nickname,
         gender=gender,
         orientation=orientation,
         birth_date=birth_date,
@@ -53,13 +53,12 @@ def test_created_at_is_assigned_automatically(test_file):
 
 def test_autoincrement_with_three_users(test_file):
     clear_file(test_file)
-    
+
     users = []
 
-    for name in ["Stephen", "Nova", "Korner"]:
-        user = make_user(test_file, name=name)
+    for nickname in ["cliente", "otro_cliente", "otro_cliente_mas"]:
+        user = make_user(test_file, nickname=nickname)
         user.id = get_next_user_id(file_path=test_file)
-        # user.name = name
         users.append(user)
 
         save_users(users, test_file)
@@ -84,7 +83,7 @@ def test_register_user_valid():
 
     assert len(users) == 1
     assert users[0] is user
-    assert user.name == "cliente"
+    assert user.nickname == "cliente"
     assert user.gender == "M"
     assert user.orientation == "H"
     assert user.birth_date == date(1990, 5, 15)
@@ -105,7 +104,7 @@ def test_register_user_invalid_age(test_file):
     ):
         User.create(
             id=get_next_user_id(file_path=test_file),
-            name="cliente",
+            nickname="cliente",
             gender="M",
             orientation="H",
             birth_date=date(2016, 10, 13),
@@ -137,7 +136,7 @@ def test_save_and_load_user(test_file):
 
     loaded_user = users[0]
 
-    assert loaded_user.name == user.name
+    assert loaded_user.nickname == user.nickname
     assert loaded_user.gender == "M"
     assert loaded_user.orientation == "H"
     assert loaded_user.birth_date == user.birth_date
@@ -172,7 +171,7 @@ def test_excludes_inactive_and_blocked_users(test_file):
 
     inactive_user = make_user(
         test_file,
-        name="otro_cliente",
+        nickname="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
         orientation="H",
@@ -182,7 +181,7 @@ def test_excludes_inactive_and_blocked_users(test_file):
 
     blocked_user = make_user(
         test_file,
-        name="otro_cliente_mas",
+        nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="F",
         orientation="H",
@@ -206,7 +205,7 @@ def test_filters_by_preferences(test_file):
 
     compatible_user = make_user(
         test_file,
-        name="otro_cliente",
+        nickname="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
         orientation="H",
@@ -215,7 +214,7 @@ def test_filters_by_preferences(test_file):
 
     different_city = make_user(
         test_file,
-        name="otro_cliente_mas",
+        nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         city="Bogotá D.C.",
         gender="F",
@@ -224,7 +223,7 @@ def test_filters_by_preferences(test_file):
 
     different_orientation = make_user(
         test_file,
-        name="y_un_cliente_mas",
+        nickname="y_un_cliente_mas",
         email="y_un_cliente_mas@example.com",
         gender="M",
         orientation="O",
@@ -252,7 +251,7 @@ def test_returns_empty_list_when_no_matches(test_file):
 
     other_user = make_user(  # different city
         test_file,
-        name="otro_cliente",
+        nickname="otro_cliente",
         email="otro_cliente@example.com",
         city="Bogotá D.C.",
         gender="F",
@@ -261,7 +260,7 @@ def test_returns_empty_list_when_no_matches(test_file):
 
     another_user = make_user(  # different gender and sexual orientation
         test_file,
-        name="otro_cliente_mas",
+        nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="M",
         orientation="O",

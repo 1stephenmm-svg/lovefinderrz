@@ -44,7 +44,7 @@ def show_matches(): ...
 
 
 def register_user_from_menu(users):
-    data = show_register_menu()
+    data = show_register_menu(users)
 
     if not data:
         return None
@@ -55,12 +55,14 @@ def register_user_from_menu(users):
     return user
 
 
-def register_user(users, name, gender, orientation, birth_date, email, city):
+def register_user(
+    users, nickname, gender, orientation, birth_date, email, city
+):
     user_id = get_next_user_id(users)
 
     user = User.create(
         user_id,
-        name,
+        nickname,
         gender,
         orientation,
         birth_date,

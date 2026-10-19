@@ -7,7 +7,7 @@ from user import User
 FILE = "data/users.csv"
 FIELDS = [
     "id",
-    "name",
+    "nickname",
     "gender",
     "orientation",
     "birth_date",
@@ -35,7 +35,7 @@ def save_user(user):
         writer.writerow(
             {
                 "id": user.id,
-                "name": user.name,
+                "nickname": user.nickname,
                 "gender": user.gender,
                 "orientation": user.orientation,
                 "birth_date": user.birth_date.isoformat(),
@@ -78,7 +78,7 @@ def load_users(file_path=FILE):
 
             user = User(
                 id=int(row["id"]),
-                name=row["name"],
+                nickname=row["nickname"],
                 gender=row["gender"],
                 orientation=row["orientation"],
                 birth_date=birth_date,
@@ -101,7 +101,7 @@ def load_users(file_path=FILE):
 
 def get_next_user_id(users=None, file_path=FILE):
     users = load_users(file_path)
-    
+
     if not users:
         return 1
 
@@ -119,7 +119,7 @@ def save_users(users, file_path=FILE):
             writer.writerow(
                 {
                     "id": user.id,
-                    "name": user.name,
+                    "nickname": user.nickname,
                     "gender": user.gender,
                     "orientation": user.orientation,
                     "birth_date": user.birth_date,

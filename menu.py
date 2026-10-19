@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pyfiglet import Figlet
 from tabulate import tabulate
+from user import User
 from validator_collection import checkers
 
 from data import CITIES
@@ -15,18 +16,23 @@ def show_header():
     print(main_title)
 
 
-def input_name():
+def input_nickname(users):
     while True:
-        name = input("Nombre: ").strip().capitalize()
+        candidate = input("¿Tu Nickname?: ").strip().lower()
 
-        if name.isalpha():
-            return name
+        try:
+            User.validate_nickname(candidate)
+        except ValueError as error:
+            print(error)
+            continue
 
-        elif not name:
-            print("Tu nombre no puede estar vacio.")
+        if any(user.nickname.lower() == candidate for user in users):
+            print("Alguien predijo tu elección. Escoge otro")
+            continue
 
-        elif not name.isalpha():
-            print("Tu nombre sólo puede contener letras.")
+        nickname = candidate
+
+        return nickname
 
 
 def select_gender():
@@ -116,10 +122,10 @@ def show_main_menu():
     print("5. Salir")
 
 
-def show_register_menu():
+def show_register_menu(users):
     show_header()
 
-    name = input_name()
+    nickname = input_nickname(users)
     gender = select_gender()
     orientation = select_sexual_orientation()
     birth_date = input_birth_date()
@@ -129,7 +135,7 @@ def show_register_menu():
     confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()
 
     if confirmation == "S":
-        return name, gender, orientation, birth_date, email, city
+        return nickname, gender, orientation, birth_date, email, city
 
     return None
 
@@ -149,7 +155,7 @@ def show_profiles(users, current_user):
 
         profiles.append(
             [
-                user.name,
+                user.nickname,
                 f"{user.age} años",
                 "Masculino" if user.gender == "M" else "Femenino",
                 "Heterosexual" if user.orientation == "H" else "Otro",
@@ -167,7 +173,7 @@ def show_profiles(users, current_user):
             tabulate(
                 profiles,
                 headers=[
-                    "Nombre",
+                    "Nickname",
                     "Edad",
                     "Género",
                     "Orientación",
