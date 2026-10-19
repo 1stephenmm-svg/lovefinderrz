@@ -4,21 +4,20 @@ from datetime import date, datetime
 
 from project import (
     Client,
-    User,
-    find_compatible_users,
+    find_compatible_clients,
     get_next_user_id,
     load_users,
-    register_user,
+    register_client,
     save_users,
 )
 
 
 @pytest.fixture
 def test_file(tmp_path):
-    return tmp_path / "test_users.csv"
+    return tmp_path / "test_clients.csv"
 
 
-def make_user(
+def make_client(
     test_file,
     nickname="cliente",
     gender="M",
@@ -51,33 +50,33 @@ def clear_file(test_file, users=None):
 def test_created_at_is_assigned_automatically(test_file):
     clear_file(test_file)
 
-    user = make_user(test_file)
+    client = make_client(test_file)
 
-    assert isinstance(user.created_at, datetime)
+    assert isinstance(client.created_at, datetime)
 
 
-def test_autoincrement_with_three_users(test_file):
+def test_autoincrement_with_three_clients(test_file):
     clear_file(test_file)
 
-    users = []
+    clients = []
 
     for nickname in ["cliente", "otro_cliente", "otro_cliente_mas"]:
-        user = make_user(test_file, nickname=nickname)
-        user.id = get_next_user_id(file_path=test_file)
-        users.append(user)
+        client = make_client(test_file, nickname=nickname)
+        client.id = get_next_user_id(file_path=test_file)
+        clients.append(client)
 
-        save_users(users, test_file)
+        save_users(clients, test_file)
 
-    loaded_users = load_users(test_file)
+    loaded_clients = load_users(test_file)
 
-    assert [user.id for user in loaded_users] == [1, 2, 3]
+    assert [client.id for client in loaded_clients] == [1, 2, 3]
 
 
-def test_register_user_valid():
-    users = []
+def test_register_client_valid():
+    clients = []
 
-    user = register_user(
-        users,
+    client = register_client(
+        clients,
         "cliente",
         "M",
         "H",
@@ -86,22 +85,22 @@ def test_register_user_valid():
         "Pasto",
     )
 
-    assert len(users) == 1
-    assert users[0] is user
-    assert user.nickname == "cliente"
-    assert user.gender == "M"
-    assert user.orientation == "H"
-    assert user.birth_date == date(1990, 5, 15)
-    assert user.email == "cliente@example.com"
-    assert user.city == "Pasto"
-    assert user.balance == 0
-    assert user.is_active
-    assert not user.is_blocked
-    assert user.same_orientation
-    assert user.same_location
+    assert len(clients) == 1
+    assert clients[0] is client
+    assert client.nickname == "cliente"
+    assert client.gender == "M"
+    assert client.orientation == "H"
+    assert client.birth_date == date(1990, 5, 15)
+    assert client.email == "cliente@example.com"
+    assert client.city == "Pasto"
+    assert client.balance == 0
+    assert client.is_active
+    assert not client.is_blocked
+    assert client.same_orientation
+    assert client.same_location
 
 
-def test_register_user_invalid_age(test_file):
+def test_register_client_invalid_age(test_file):
     clear_file(test_file)
 
     with pytest.raises(
@@ -118,41 +117,41 @@ def test_register_user_invalid_age(test_file):
         )
 
 
-def test_user_age_calculation(test_file):
+def test_client_age_calculation(test_file):
     clear_file(test_file)
 
-    user = make_user(test_file)
+    client = make_client(test_file)
 
-    assert user.age == 36  # in 2026, after may 15
+    assert client.age == 36  # in 2026, after may 15
 
 
 # storage.py
 
 
-def test_save_and_load_user(test_file):
+def test_save_and_load_client(test_file):
     clear_file(test_file)
 
-    user = make_user(test_file)
-    save_users([user], test_file)
+    client = make_client(test_file)
+    save_users([client], test_file)
 
-    users = load_users(test_file)
+    clients = load_users(test_file)
 
-    assert len(users) == 1
+    assert len(clients) == 1
 
-    loaded_user = users[0]
+    loaded_client = clients[0]
 
-    assert loaded_user.nickname == user.nickname
-    assert loaded_user.gender == "M"
-    assert loaded_user.orientation == "H"
-    assert loaded_user.birth_date == user.birth_date
-    assert loaded_user.city == "Pasto"
-    assert loaded_user.email == user.email
-    assert loaded_user.location == user.location
-    assert loaded_user.balance == user.balance
-    assert loaded_user.is_active
-    assert not loaded_user.is_blocked
-    assert loaded_user.same_orientation
-    assert loaded_user.same_location
+    assert loaded_client.nickname == client.nickname
+    assert loaded_client.gender == "M"
+    assert loaded_client.orientation == "H"
+    assert loaded_client.birth_date == client.birth_date
+    assert loaded_client.city == "Pasto"
+    assert loaded_client.email == client.email
+    assert loaded_client.location == client.location
+    assert loaded_client.balance == client.balance
+    assert loaded_client.is_active
+    assert not loaded_client.is_blocked
+    assert loaded_client.same_orientation
+    assert loaded_client.same_location
 
 
 # matching.py
@@ -161,63 +160,63 @@ def test_save_and_load_user(test_file):
 def test_exclude_own_profile(test_file):
     clear_file(test_file)
 
-    current_user = make_user(test_file)
-    users = [current_user]
+    current_client = make_client(test_file)
+    clients = [current_client]
 
-    matches = find_compatible_users(current_user, users)
+    matches = find_compatible_clients(current_client, clients)
 
-    assert current_user not in matches
+    assert current_client not in matches
 
 
-def test_excludes_inactive_and_blocked_users(test_file):
+def test_excludes_inactive_and_blocked_clients(test_file):
     clear_file(test_file)
 
-    current_user = make_user(test_file)
+    current_client = make_client(test_file)
 
-    inactive_user = make_user(
+    inactive_client = make_client(
         test_file,
         nickname="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
         orientation="H",
     )
-    inactive_user.is_active = False
-    inactive_user.location = (1.19, -77.25)
+    inactive_client.is_active = False
+    inactive_client.location = (1.19, -77.25)
 
-    blocked_user = make_user(
+    blocked_client = make_client(
         test_file,
         nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="F",
         orientation="H",
     )
-    blocked_user.is_blocked = True
-    blocked_user.location = (1.24, -77.29)
+    blocked_client.is_blocked = True
+    blocked_client.location = (1.24, -77.29)
 
-    users = [inactive_user, blocked_user]
+    clients = [inactive_client, blocked_client]
 
-    matches = find_compatible_users(current_user, users)
-    assert inactive_user not in matches
-    assert blocked_user not in matches
+    matches = find_compatible_clients(current_client, clients)
+    assert inactive_client not in matches
+    assert blocked_client not in matches
 
 
 def test_filters_by_preferences(test_file):
     clear_file(test_file)
 
-    current_user = make_user(test_file)
-    current_user.same_location = True
-    current_user.same_orientation = True
+    current_client = make_client(test_file)
+    current_client.same_location = True
+    current_client.same_orientation = True
 
-    compatible_user = make_user(
+    compatible_client = make_client(
         test_file,
         nickname="otro_cliente",
         email="otro_cliente@example.com",
         gender="F",
         orientation="H",
     )
-    compatible_user.location = (1.19, -77.25)
+    compatible_client.location = (1.19, -77.25)
 
-    different_city = make_user(
+    different_city = make_client(
         test_file,
         nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
@@ -226,7 +225,7 @@ def test_filters_by_preferences(test_file):
         orientation="H",
     )
 
-    different_orientation = make_user(
+    different_orientation = make_client(
         test_file,
         nickname="y_un_cliente_mas",
         email="y_un_cliente_mas@example.com",
@@ -235,26 +234,26 @@ def test_filters_by_preferences(test_file):
     )
     different_city.location = (1.24, -77.29)
 
-    users = [
-        current_user,
-        compatible_user,
+    clients = [
+        current_client,
+        compatible_client,
         different_city,
         different_orientation,
     ]
 
-    result = find_compatible_users(current_user, users)
+    result = find_compatible_clients(current_client, clients)
 
-    assert result == [compatible_user]
+    assert result == [compatible_client]
 
 
 def test_returns_empty_list_when_no_matches(test_file):
     clear_file(test_file)
 
-    current_user = make_user(test_file)
-    current_user.same_location = True
-    current_user.same_orientation = True
+    current_client = make_client(test_file)
+    current_client.same_location = True
+    current_client.same_orientation = True
 
-    other_user = make_user(  # different city
+    other_client = make_client(  # different city
         test_file,
         nickname="otro_cliente",
         email="otro_cliente@example.com",
@@ -263,17 +262,17 @@ def test_returns_empty_list_when_no_matches(test_file):
         orientation="H",
     )
 
-    another_user = make_user(  # different gender and sexual orientation
+    another_client = make_client(  # different gender and sexual orientation
         test_file,
         nickname="otro_cliente_mas",
         email="otro_cliente_mas@example.com",
         gender="M",
         orientation="O",
     )
-    another_user.location = (1.24, -77.29)
+    another_client.location = (1.24, -77.29)
 
-    users = [other_user, another_user]
+    clients = [other_client, another_client]
 
-    matches = find_compatible_users(current_user, users)
+    matches = find_compatible_clients(current_client, clients)
 
     assert not matches

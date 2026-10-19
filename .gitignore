@@ -1,6 +1,5 @@
 __pycache__/
 *.pyc
-data/test_users.csv
 
 # Variables de entorno
 .venv

@@ -1,4 +1,4 @@
-from matching import find_compatible_users
+from matching import find_compatible_clients
 from menu import (
     show_main_menu,
     show_profiles,
@@ -6,7 +6,7 @@ from menu import (
     show_register_menu,
 )
 from storage import get_next_user_id, load_users, save_user, save_users
-from user import Client, User 
+from user import Client
 
 
 def main():
@@ -21,11 +21,11 @@ def main():
             case "1":
                 current_user = register_user_from_menu(users) or current_user
             case "2":
-                compatible_users = find_compatible_users(
+                compatible_clients = find_compatible_clients(
                     current_user,
                     users,
                 )
-                show_profiles(compatible_users, current_user)
+                show_profiles(compatible_clients, current_user)
             case "3":
                 if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
@@ -49,13 +49,13 @@ def register_user_from_menu(users):
     if not data:
         return None
 
-    user = register_user(users, *data)
+    user = register_client(users, *data)
     save_user(user)
 
     return user
 
 
-def register_user(
+def register_client(
     users, nickname, gender, orientation, birth_date, email, city
 ):
     user_id = get_next_user_id(users)
@@ -91,7 +91,7 @@ def require_current_user(users, current_user):
     if answer != "S":
         return None
 
-    return register_user(users)
+    return register_client(users)
 
 
 if __name__ == "__main__":

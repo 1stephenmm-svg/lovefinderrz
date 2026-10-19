@@ -1,34 +1,34 @@
-def find_compatible_users(current_user, users):
-    compatible_users = []
+def find_compatible_clients(current_client, clients):
+    compatible_clients = []
 
-    if not current_user:
-        return users
+    if not current_client:
+        return clients
 
-    for user in users:
-        if user == current_user:
+    for client in clients:
+        if client == current_client:
             continue
 
-        if not user.is_active or user.is_blocked:
+        if not client.is_active or client.is_blocked:
             continue
 
         if (
-            current_user.same_orientation
-            and user.orientation != current_user.orientation
+            current_client.same_orientation
+            and client.orientation != current_client.orientation
         ):
             continue
 
         if (
-            current_user.same_orientation
-            and user.gender == current_user.gender
+            current_client.same_orientation
+            and client.gender == current_client.gender
         ):
             continue
 
         if (
-            current_user.same_location
-            and user.city != current_user.city
+            current_client.same_location
+            and client.city != current_client.city
         ):
             continue
 
-        compatible_users.append(user)
+        compatible_clients.append(client)
 
-    return compatible_users
+    return compatible_clients
