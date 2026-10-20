@@ -1,3 +1,7 @@
+import hashlib
+import secrets
+
+from getpass import getpass
 from datetime import datetime
 
 from pyfiglet import Figlet
@@ -13,6 +17,39 @@ figlet.setFont(font="graffiti")
 def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
+
+
+def hash_password(password):
+    """
+    Generate a salted password hash using PBKDF2-HMAC-SHA256.
+
+    Args:
+        password (str): The plaintext password to hash.
+
+    Returns:
+        tuple[str, str]: A tuple containing the salt and password hash,
+        both encoded as hexadecimal strings.
+
+    A salt is a randomly generated sequence of bytes added to the
+    password before hashing. It ensures that identical passwords
+    produce different hashes when different salts are used.
+
+    The value 600_000 specifies the number of iterations (600000) performed
+    by PBKDF2. Repeated iterations increase the computational cost
+    of deriving the hash, making brute-force password attacks more
+    expensive. The underscore is a numeric separator in Python
+    and has no effect on the value.
+    """
+    salt = secrets.token_bytes(16)
+
+    password_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode(),
+        salt,
+        600_000,
+    )
+
+    return salt.hex(), password_hash.hex()
 
 
 def input_nickname(users, user_class=Client, username=None):
@@ -40,6 +77,20 @@ def input_nickname(users, user_class=Client, username=None):
         nickname = candidate
 
         return nickname
+
+
+def input_password():
+    while True:
+        password = getpass("Contraseña: ")
+        confirmation = getpass("Confirma la contraseña: ")
+
+        if password != confirmation:
+            input("Las contrasenas no coinciden.")
+            continue
+
+        salt, password_hash = hash_password(password)
+
+        return salt, password_hash
 
 
 def select_gender():
@@ -135,14 +186,17 @@ def show_register_menu(users, user_class=Client, username=None):
 
     nickname = input_nickname(users, user_class=user_class, username=username)
     email = f"{username}@lovefinderrz.com" if username else input_email()
+    password = nickname if not username else input_password()
 
     if user_class is Admin:
+        salt, password_hash = password
+
         confirmation = (
             input("¿Registrar administrador? (S/N): ").strip().upper()
         )
 
         if confirmation == "S":
-            return nickname, email
+            return nickname, email, salt, password_hash
 
         return None
 

@@ -11,6 +11,8 @@ ADMIN_FIELDS = [
     "id",
     "nickname",
     "email",
+    "password_hash",
+    "password_salt",
     "created_at",
     "is_active",
 ]
@@ -44,7 +46,11 @@ def user_to_row(user):
     }
 
     if isinstance(user, Admin):
-        return common_fields
+        return {
+            **common_fields,
+            "password_hash": user.password_hash,
+            "password_salt": user.password_salt
+        }
 
     if isinstance(user, Client):
         latitude, longitude = user.location
@@ -100,7 +106,11 @@ def save_user(user):
             + "- mirar tus matches."
             + "\nPresiona Enter para volver al menú principal..."
         )
-
+    else:
+        input(
+            f"\n¡BUEN DIA {user} !\n"
+            + "\nPresiona Enter para volver..."
+        )
 
 def load_users(file_path=None):
     files_to_load = (

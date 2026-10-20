@@ -2,6 +2,7 @@ import pytest
 
 from datetime import date, datetime
 
+from menu import hash_password
 from project import (
     Admin,
     Client,
@@ -28,10 +29,14 @@ def make_admin(
     nickname="admin",
     email="admin@lovefinderrz.com",
 ):
+    password_salt, password_hash = hash_password("admin123")
+
     return Admin.create(
         id=get_next_user_id(test_admins_file),
         nickname=nickname,
         email=email,
+        password_hash=password_hash,
+        password_salt=password_salt,
     )
 
 
@@ -73,6 +78,14 @@ def test_admin_created_at_is_assigned_automatically(test_admins_file):
     assert isinstance(admin.created_at, datetime)
 
 
+def test_same_admin_password_generates_different_salts():
+    salt1, hash1 = hash_password("admin123")
+    salt2, hash2 = hash_password("admin123")
+
+    assert salt1 != salt2
+    assert hash1 != hash2
+
+
 def test_client_created_at_is_assigned_automatically(test_file):
     clear_file(test_file)
 
@@ -99,16 +112,25 @@ def test_autoincrement_with_three_clients(test_file):
 
 
 def test_register_admin_valid():
+    password_salt, password_hash = hash_password("admin123")
+
     admins = []
 
     admin = register_user(
-        admins, Admin, "admin", "admin@lovefinderrz.com"
+        admins,
+        Admin,
+        "admin",
+        "admin@lovefinderrz.com",
+        password_salt,
+        password_hash,
     )
 
     assert len(admins) == 1
     assert admins[0] is admin
     assert admin.nickname == "admin"
     assert admin.email == "admin@lovefinderrz.com"
+    assert admin.password_hash
+    assert admin.password_salt
     assert admin.balance == 0
     assert admin.is_active
 

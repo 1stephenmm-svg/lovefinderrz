@@ -88,11 +88,16 @@ class Admin(User):
         email,
         balance=0,
         created_at=None,
+        password_hash=None,
+        password_salt=None,
     ):
         super().__init__(id, nickname, email, balance, created_at)
 
+        self.password_hash = password_hash
+        self.password_salt = password_salt
+
     def __str__(self):
-        return f"{self.nickname} mi amo y señor"
+        return f"{self.nickname.upper()} MI AMO Y SEÑOR"
 
 
 class Client(User):
