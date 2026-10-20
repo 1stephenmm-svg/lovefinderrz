@@ -15,22 +15,26 @@ def show_header():
     print(main_title)
 
 
-def input_nickname(users, user_class=Client, nickname=None):
+def input_nickname(users, user_class=Client, username=None):
+    candidate_from_args = username is not None
+
     while True:
 
-        if not nickname:
-            candidate = input("¿Tu Nickname?: ").strip().lower()
+        if candidate_from_args:
+            candidate = username.strip().lower()
         else:
-            candidate = nickname.strip().lower()
+            candidate = input("¿Tu Nickname?: ").strip().lower()
 
         try:
             user_class.validate_nickname(candidate)
         except ValueError as error:
             print(error)
+            candidate_from_args = False
             continue
 
         if any(user.nickname.lower() == candidate for user in users):
             print("Alguien predijo tu elección. Escoge otro")
+            candidate_from_args = False
             continue
 
         nickname = candidate
@@ -126,11 +130,11 @@ def show_main_menu():
     print("5. Salir")
 
 
-def show_register_menu(users, user_class=Client, nickname=None):
+def show_register_menu(users, user_class=Client, username=None):
     show_header()
 
-    nickname = input_nickname(users, user_class=user_class, nickname=nickname)
-    email = input_email()
+    nickname = input_nickname(users, user_class=user_class, username=username)
+    email = f"{username}@lovefinderrz.com" if username else input_email()
 
     if user_class is Admin:
         confirmation = (

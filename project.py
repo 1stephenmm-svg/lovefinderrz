@@ -23,11 +23,11 @@ def main():
             sys.exit("Invalid command-line argument")
 
         if len(sys.argv) != 3:
-            sys.exit("Missing nickname")
+            sys.exit("Missing username")
 
         if sys.argv[1] == "-r":
             current_user = register_user_from_menu(
-                users, user_class=Admin, nickname=sys.argv[2]
+                users, user_class=Admin, username=sys.argv[2]
             )
 
         elif sys.argv[1] == "-l":
@@ -64,8 +64,8 @@ def main():
 def show_matches(): ...
 
 
-def register_user_from_menu(users, user_class=Client, nickname=None):
-    data = show_register_menu(users, user_class=user_class, nickname=nickname)
+def register_user_from_menu(users, user_class=Client, username=None):
+    data = show_register_menu(users, user_class=user_class, username=username)
 
     if not data:
         return None
@@ -90,7 +90,7 @@ def register_user(users, user_class, *data):
 
     else:
         nickname, gender, orientation, birth_date, email, city = data
-        
+
         user = Client.create(
             user_id,
             nickname,
