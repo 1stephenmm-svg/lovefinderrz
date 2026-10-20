@@ -1,3 +1,5 @@
+import sys
+
 from matching import find_compatible_clients
 from menu import (
     show_main_menu,
@@ -6,12 +8,31 @@ from menu import (
     show_register_menu,
 )
 from storage import get_next_user_id, load_users, save_user, save_users
-from user import Client
+from user import Admin, Client
 
 
 def main():
     users = load_users()
     current_user = None
+
+    if len(sys.argv) > 3:
+        sys.exit("Too many command-line arguments")
+
+    if len(sys.argv) > 1:
+        if sys.argv[1] not in ["-r", "-l"]:
+            sys.exit("Invalid command-line argument")
+
+        if len(sys.argv) != 3:
+            sys.exit("Missing nickname")
+
+        if sys.argv[1] == "-r":
+            current_user = register_user_from_menu(
+                users, user_class=Admin, nickname=sys.argv[2]
+            )
+
+        elif sys.argv[1] == "-l":
+            # TODO
+            pass
 
     while True:
         show_main_menu()
@@ -43,32 +64,42 @@ def main():
 def show_matches(): ...
 
 
-def register_user_from_menu(users):
-    data = show_register_menu(users)
+def register_user_from_menu(users, user_class=Client, nickname=None):
+    data = show_register_menu(users, user_class=user_class, nickname=nickname)
 
     if not data:
         return None
 
-    user = register_client(users, *data)
+    user = register_user(users, user_class, *data)
     save_user(user)
 
     return user
 
 
-def register_client(
-    users, nickname, gender, orientation, birth_date, email, city
-):
-    user_id = get_next_user_id(users)
+def register_user(users, user_class, *data):
+    user_id = get_next_user_id(user_class)
 
-    user = Client.create(
-        user_id,
-        nickname,
-        gender,
-        orientation,
-        birth_date,
-        email,
-        city,
-    )
+    if user_class is Admin:
+        nickname, email = data
+
+        user = Admin.create(
+            user_id,
+            nickname=nickname,
+            email=email,
+        )
+
+    else:
+        nickname, gender, orientation, birth_date, email, city = data
+        
+        user = Client.create(
+            user_id,
+            nickname,
+            gender,
+            orientation,
+            birth_date,
+            email,
+            city,
+        )
 
     users.append(user)
 
@@ -91,7 +122,7 @@ def require_current_user(users, current_user):
     if answer != "S":
         return None
 
-    return register_client(users)
+    return register_user(users)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,4 @@
 id,nickname,gender,orientation,birth_date,city,email,latitude,longitude,balance,is_active,is_blocked,same_orientation,same_location,created_at
-0,admin,M,H,1982-09-06,"Pasto, Nariño, Colombia",admin@example.com,1.2187505517048605,-77.29031852277268,0,True,False,True,True,2026-10-14T01:00:22.621445
 1,Cuasipundio,M,O,1970-01-01,"Ipiales, Nariño, Colombia",cuasipundio@gerchan.com,0.5899033552928232,-77.37465979830091,0,True,False,True,True,2026-10-14T01:00:22.621445
 2,Ana,F,H,2001-12-01,"Pasto, Nariño, Colombia",ana@mail.com,1.1948707562614433,-77.25042197209488,0,True,False,True,True,2026-10-14T01:00:22.621445
 3,Konan,F,O,2004-06-06,"Pasto, Nariño, Colombia",konan@mail.edu.co,1.237998759256672,-77.28628657695695,0,True,False,True,True,2026-10-14T01:00:22.621445

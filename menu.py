@@ -4,7 +4,7 @@ from pyfiglet import Figlet
 from tabulate import tabulate
 
 from data import CITIES
-from user import Client, User
+from user import Admin, Client
 
 figlet = Figlet()
 figlet.setFont(font="graffiti")
@@ -15,12 +15,16 @@ def show_header():
     print(main_title)
 
 
-def input_nickname(users):
+def input_nickname(users, user_class=Client, nickname=None):
     while True:
-        candidate = input("¿Tu Nickname?: ").strip().lower()
+
+        if not nickname:
+            candidate = input("¿Tu Nickname?: ").strip().lower()
+        else:
+            candidate = nickname.strip().lower()
 
         try:
-            Client.validate_nickname(candidate)
+            user_class.validate_nickname(candidate)
         except ValueError as error:
             print(error)
             continue
@@ -122,14 +126,25 @@ def show_main_menu():
     print("5. Salir")
 
 
-def show_register_menu(users):
+def show_register_menu(users, user_class=Client, nickname=None):
     show_header()
 
-    nickname = input_nickname(users)
+    nickname = input_nickname(users, user_class=user_class, nickname=nickname)
+    email = input_email()
+
+    if user_class is Admin:
+        confirmation = (
+            input("¿Registrar administrador? (S/N): ").strip().upper()
+        )
+
+        if confirmation == "S":
+            return nickname, email
+
+        return None
+
     gender = select_gender()
     orientation = select_sexual_orientation()
     birth_date = input_birth_date()
-    email = input_email()
     city = select_city()
 
     confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()

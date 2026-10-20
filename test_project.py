@@ -3,18 +3,36 @@ import pytest
 from datetime import date, datetime
 
 from project import (
+    Admin,
     Client,
     find_compatible_clients,
     get_next_user_id,
     load_users,
-    register_client,
+    register_user,
     save_users,
 )
 
 
 @pytest.fixture
+def test_admins_file(tmp_path):
+    return tmp_path / "test_admins.csv"
+
+
+@pytest.fixture
 def test_file(tmp_path):
     return tmp_path / "test_clients.csv"
+
+
+def make_admin(
+    test_admins_file,
+    nickname="admin",
+    email="admin@lovefinderrz.com",
+):
+    return Admin.create(
+        id=get_next_user_id(test_admins_file),
+        nickname=nickname,
+        email=email,
+    )
 
 
 def make_client(
@@ -47,7 +65,15 @@ def clear_file(test_file, users=None):
 # user.py
 
 
-def test_created_at_is_assigned_automatically(test_file):
+def test_admin_created_at_is_assigned_automatically(test_admins_file):
+    clear_file(test_admins_file)
+
+    admin = make_admin(test_admins_file)
+
+    assert isinstance(admin.created_at, datetime)
+
+
+def test_client_created_at_is_assigned_automatically(test_file):
     clear_file(test_file)
 
     client = make_client(test_file)
@@ -72,11 +98,27 @@ def test_autoincrement_with_three_clients(test_file):
     assert [client.id for client in loaded_clients] == [1, 2, 3]
 
 
+def test_register_admin_valid():
+    admins = []
+
+    admin = register_user(
+        admins, Admin, "admin", "admin@lovefinderrz.com"
+    )
+
+    assert len(admins) == 1
+    assert admins[0] is admin
+    assert admin.nickname == "admin"
+    assert admin.email == "admin@lovefinderrz.com"
+    assert admin.balance == 0
+    assert admin.is_active
+
+
 def test_register_client_valid():
     clients = []
 
-    client = register_client(
+    client = register_user(
         clients,
+        Client,
         "cliente",
         "M",
         "H",

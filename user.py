@@ -42,7 +42,7 @@ class User:
             raise ValueError("Email inválido")
 
     # Properties
-    
+
     @property
     def email(self):
         return self._email
@@ -81,6 +81,16 @@ class User:
 
 
 class Admin(User):
+    def __init__(
+        self,
+        id,
+        nickname,
+        email,
+        balance=0,
+        created_at=None,
+    ):
+        super().__init__(id, nickname, email, balance, created_at)
+
     def __str__(self):
         return f"{self.nickname} mi amo y señor"
 
