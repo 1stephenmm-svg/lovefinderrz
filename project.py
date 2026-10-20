@@ -42,12 +42,18 @@ def main():
             case "1":
                 current_user = register_user_from_menu(users) or current_user
             case "2":
+                if not isinstance(current_user, Client):
+                    continue
+                
                 compatible_clients = find_compatible_clients(
                     current_user,
                     users,
                 )
                 show_profiles(compatible_clients, current_user)
             case "3":
+                if not isinstance(current_user, Client):
+                    continue
+                
                 if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
                     current_user.update_preferences(*data)
