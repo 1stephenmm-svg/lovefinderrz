@@ -122,7 +122,7 @@ def require_current_user(users, current_user):
     if answer != "S":
         return None
 
-    return register_user(users)
+    return register_user_from_menu(users)
 
 
 if __name__ == "__main__":
