@@ -4,6 +4,7 @@ from datetime import date, datetime
 
 from matching import find_compatible_clients
 from menu import hash_password
+from project import validate_arguments
 from storage import get_next_user_id, load_users, save_users
 from user import Admin, Client
 from user_service import register_user
@@ -17,6 +18,26 @@ def test_admins_file(tmp_path):
 @pytest.fixture
 def test_file(tmp_path):
     return tmp_path / "test_clients.csv"
+
+
+# project.py
+
+
+def test_validate_arguments_valid_registration():
+    assert validate_arguments(["-r", "admin"]) == ("-r", "admin")
+
+
+def test_validate_arguments_invalid_command():
+    with pytest.raises(ValueError, match="Invalid command-line argument"):
+        validate_arguments(["-x", "admin"])
+
+
+def test_validate_arguments_missing_username():
+    with pytest.raises(ValueError, match="Missing username"):
+        validate_arguments(["-r"])
+
+
+# user.py
 
 
 def make_admin(
@@ -53,16 +74,6 @@ def make_client(
         email=email,
         city=city,
     )
-
-
-def clear_file(test_file, users=None):
-    if users is None:
-        users = []
-
-    save_users(users, test_file)
-
-
-# user.py
 
 
 def test_admin_created_at_is_assigned_automatically(test_admins_file):
@@ -185,6 +196,13 @@ def test_client_age_calculation(test_file):
 
 
 # storage.py
+
+
+def clear_file(test_file, users=None):
+    if users is None:
+        users = []
+
+    save_users(users, test_file)
 
 
 def test_save_and_load_client(test_file):
