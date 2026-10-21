@@ -2,16 +2,11 @@ import pytest
 
 from datetime import date, datetime
 
+from matching import find_compatible_clients
 from menu import hash_password
-from project import (
-    Admin,
-    Client,
-    find_compatible_clients,
-    get_next_user_id,
-    load_users,
-    register_user,
-    save_users,
-)
+from storage import get_next_user_id, load_users, save_users
+from user import Admin, Client
+from user_service import register_user
 
 
 @pytest.fixture
