@@ -24,11 +24,12 @@ The code is organized into modules to facilitate maintenance and future developm
 ├── data.py                # Shared constants and reference data
 ├── location.py            # Geographic coordinate handling
 ├── matching.py            # User compatibility logic
-├── menu.py
-├── project.py             # Main application flow
-├── storage.py             # CSV data access
+├── menu.py                # Client and admin menus, registration forms, and user interaction
+├── project.py             # Application entry point and command-line argument handling
+├── storage.py             # Loading and saving user data
 ├── test_project.py        # Automated tests
 ├── user.py                # User model
+├── user_service.py        # User creation and user-related business logic
 ├── .gitignore
 ├── .python-version
 ├── pyproject.toml         # Project and development tool configuration
