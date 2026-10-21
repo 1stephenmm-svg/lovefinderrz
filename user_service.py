@@ -1,7 +1,9 @@
 from storage import get_next_user_id
 from user import Admin, Client
 
+
 def register_user(users, user_class, *data):
+    """Create a user, add it to the user list, and return it."""
     user_id = get_next_user_id(user_class)
 
     if user_class is Admin:

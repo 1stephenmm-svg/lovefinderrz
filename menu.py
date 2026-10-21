@@ -1,8 +1,8 @@
 import hashlib
 import secrets
 
-from getpass import getpass
 from datetime import datetime
+from getpass import getpass
 
 from pyfiglet import Figlet
 from tabulate import tabulate
@@ -180,6 +180,7 @@ def select_city():
 
 
 def show_register_menu(users, user_class=Client, username=None):
+    """Collect the information required to register a user."""
     show_header()
 
     nickname = input_nickname(users, user_class=user_class, username=username)
@@ -212,6 +213,7 @@ def show_register_menu(users, user_class=Client, username=None):
 
 
 def register_user_from_menu(users, user_class=Client, username=None):
+    """Register and save a user through the console menu."""
     data = show_register_menu(users, user_class=user_class, username=username)
 
     if not data:
@@ -299,6 +301,7 @@ def show_matches():
 
 
 def require_current_user(users, current_user):
+    """Request registration if no current user is available."""
     if current_user:
         return current_user
 
@@ -319,6 +322,7 @@ def require_current_user(users, current_user):
 
 # 4. Main Menus by Role
 def display_client_menu():
+    """Display the main menu options for clients."""
     show_header()
 
     print("1. Regístrate")
@@ -329,6 +333,7 @@ def display_client_menu():
 
 
 def show_client_menu(current_user, users):
+    """Handle client menu interactions."""
     while True:
         display_client_menu()
 
@@ -363,12 +368,14 @@ def show_client_menu(current_user, users):
 
 
 def display_admin_menu():
+    """Display the main menu options for administrators."""
     show_header()
 
     # TODO
 
 
 def show_admin_menu(current_user, users):
+    """Handle admin menu interactions."""
     display_admin_menu()
 
     # TODO
