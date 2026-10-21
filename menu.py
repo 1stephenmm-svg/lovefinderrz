@@ -8,12 +8,16 @@ from pyfiglet import Figlet
 from tabulate import tabulate
 
 from data import CITIES
+from matching import find_compatible_clients
+from storage import save_user, save_users
 from user import Admin, Client
+from user_service import register_user
 
 figlet = Figlet()
 figlet.setFont(font="graffiti")
 
 
+# 1. Auxiliary display and security functions
 def show_header():
     main_title = figlet.renderText("Lovefinderrz")
     print(main_title)
@@ -52,6 +56,7 @@ def hash_password(password):
     return salt.hex(), password_hash.hex()
 
 
+# 2. Input and data selection functions
 def input_nickname(users, user_class=Client, username=None):
     candidate_from_args = username is not None
 
@@ -171,14 +176,7 @@ def select_city():
         print("Selecciona una opción válida.")
 
 
-def show_main_menu():
-    show_header()
-
-    print("1. Regístrate")
-    print("2. Mira perfiles")
-    print("3. Tus preferencias")
-    print("4. Mira tus matches")
-    print("5. Salir")
+# 3. Forms and submenus
 
 
 def show_register_menu(users, user_class=Client, username=None):
@@ -211,6 +209,18 @@ def show_register_menu(users, user_class=Client, username=None):
         return nickname, gender, orientation, birth_date, email, city
 
     return None
+
+
+def register_user_from_menu(users, user_class=Client, username=None):
+    data = show_register_menu(users, user_class=user_class, username=username)
+
+    if not data:
+        return None
+
+    user = register_user(users, user_class, *data)
+    save_user(user)
+
+    return user
 
 
 def show_profiles(users, current_user):
@@ -280,3 +290,85 @@ def show_preferences_menu():
     same_location = location_preference == "S"
 
     return same_orientation, same_location
+
+
+def show_matches():
+    show_header()
+
+    # TODO
+
+
+def require_current_user(users, current_user):
+    if current_user:
+        return current_user
+
+    answer = (
+        input(
+            "Necesitas registrarte para acceder a esta opción. "
+            "¿Quieres hacerlo ahora? (S/N): "
+        )
+        .strip()
+        .upper()
+    )
+
+    if answer != "S":
+        return None
+
+    return register_user_from_menu(users)
+
+
+# 4. Main Menus by Role
+def display_client_menu():
+    show_header()
+
+    print("1. Regístrate")
+    print("2. Mira perfiles")
+    print("3. Tus preferencias")
+    print("4. Mira tus matches")
+    print("5. Salir")
+
+
+def show_client_menu(current_user, users):
+    while True:
+        display_client_menu()
+
+        option = input("Selecciona una opción: ").strip()
+        match option:
+            case "1":
+                current_user = register_user_from_menu(users) or current_user
+            case "2":
+                if not isinstance(current_user, Client):
+                    continue
+
+                compatible_clients = find_compatible_clients(
+                    current_user,
+                    users,
+                )
+                show_profiles(compatible_clients, current_user)
+            case "3":
+                if not isinstance(current_user, Client):
+                    continue
+
+                if current_user := require_current_user(users, current_user):
+                    data = show_preferences_menu()
+                    current_user.update_preferences(*data)
+                    save_users(users)
+            case "4":
+                if current_user := require_current_user(users, current_user):
+                    show_matches()
+            case "5":
+                break
+            case _:
+                pass
+
+
+def display_admin_menu():
+    show_header()
+
+    # TODO
+
+
+def show_admin_menu(current_user, users):
+    display_admin_menu()
+
+    # TODO
