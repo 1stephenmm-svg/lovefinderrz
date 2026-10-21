@@ -25,12 +25,12 @@ class User:
     def validate_nickname(nickname):
         if not 3 <= len(nickname) <= 20:
             raise ValueError("Debe tener entre 3 y 20 caracteres de longitud.")
-        if not re.fullmatch(r"[A-Za-z0-9._-]+", nickname):
+        if not re.fullmatch(r"[a-z0-9._-]+", nickname):
             raise ValueError(
                 "Sólo puede contener letras, numeros, puntos o guiones."
             )
-        if not re.match(r"[A-Za-z0-9]+", nickname) or not re.search(
-            r"[A-Za-z0-9]+$", nickname
+        if not re.match(r"[a-z0-9]+", nickname) or not re.search(
+            r"[a-z0-9]+$", nickname
         ):
             raise ValueError(
                 "Tu nickname debe comenzar y terminar con letras o números."
