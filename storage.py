@@ -189,18 +189,20 @@ def get_next_user_id(user_class=Client, file_path=None):
 
     return max(user.id for user in users) + 1
 
+def save_records(records, file_path, fields):
+    """Save records to a CSV file."""
+    with open(file_path, "w", newline="", encoding="utf-8") as file:
+        writer = csv.DictWriter(file, fieldnames=fields)
+        writer.writeheader()
+
+        for record in records:
+            writer.writerow(user_to_row(record))
+
 
 def save_users(users, clients_file=CLIENTS_FILE, admins_file=ADMINS_FILE):
+    """Save clients and administrators to their respective files."""
     clients = [user for user in users if isinstance(user, Client)]
     admins = [user for user in users if isinstance(user, Admin)]
 
-    for file_path, fields, records in (
-        (clients_file, CLIENT_FIELDS, clients),
-        (admins_file, ADMIN_FIELDS, admins),
-    ):
-        with open(file_path, "w", newline="", encoding="utf-8") as file:
-            writer = csv.DictWriter(file, fieldnames=fields)
-            writer.writeheader()
-
-            for record in records:
-                writer.writerow(user_to_row(record))
+    save_records(clients, CLIENTS_FILE, CLIENT_FIELDS)
+    save_records(admins, ADMINS_FILE, ADMIN_FIELDS)
