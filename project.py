@@ -1,26 +1,28 @@
 import sys
 
 from menu import register_user_from_menu, show_admin_menu, show_client_menu
-from storage import load_users
+from storage import CLIENTS_FILE, load_users
 from user import Admin
 
 
 def main():
-    users = load_users()
     current_user = None
 
     try:
         command, username = validate_arguments(sys.argv[1:])
 
+        if command is None:
+            users = load_users(CLIENTS_FILE)
+            show_client_menu(None, users)
+
         if command == "-r":
+            users = load_users()
             current_user = register_user_from_menu(
                 users, user_class=Admin, username=username
             )
         elif command == "-l":
             # TODO
             pass
-        else:
-            show_client_menu(None, users)
     except ValueError as error:
         sys.exit(str(error))
 
