@@ -5,7 +5,13 @@ from datetime import date, datetime
 from matching import find_compatible_clients
 from menu import hash_password
 from project import validate_arguments
-from storage import get_next_user_id, load_users, save_users
+from storage import (
+    ADMIN_FIELDS,
+    CLIENT_FIELDS,
+    get_next_user_id,
+    load_users,
+    save_records,
+)
 from user import Admin, Client
 from user_service import register_user
 
@@ -110,7 +116,7 @@ def test_autoincrement_with_three_clients(test_file):
         client.id = get_next_user_id(file_path=test_file)
         clients.append(client)
 
-        save_users(clients, test_file)
+        save_records(clients, test_file, CLIENT_FIELDS)
 
     loaded_clients = load_users(test_file)
 
@@ -202,14 +208,14 @@ def clear_file(test_file, users=None):
     if users is None:
         users = []
 
-    save_users(users, test_file)
+    save_records(users, test_file, CLIENT_FIELDS)
 
 
 def test_save_and_load_client(test_file):
     clear_file(test_file)
 
     client = make_client(test_file)
-    save_users([client], test_file)
+    save_records([client], test_file, CLIENT_FIELDS)
 
     clients = load_users(test_file)
 
@@ -229,6 +235,22 @@ def test_save_and_load_client(test_file):
     assert not loaded_client.is_blocked
     assert loaded_client.same_orientation
     assert loaded_client.same_location
+
+
+def test_save_clients_does_not_modify_admins_csv(test_admins_file, test_file):
+    # Create an administrators CSV with an existing record.
+    admin = make_admin(test_admins_file)
+    save_records([admin], test_admins_file, ADMIN_FIELDS)
+
+    # Save the original contents.
+    admins_before = test_admins_file.read_bytes()
+
+    # Create and save a client.
+    client = make_client(test_file)
+    save_records([client], test_file, CLIENT_FIELDS)
+
+    # Verify that the administrators CSV remains unchanged.
+    assert test_admins_file.read_bytes() == admins_before
 
 
 # matching.py

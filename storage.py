@@ -49,7 +49,7 @@ def user_to_row(user):
         return {
             **common_fields,
             "password_hash": user.password_hash,
-            "password_salt": user.password_salt
+            "password_salt": user.password_salt,
         }
 
     if isinstance(user, Client):
@@ -107,10 +107,8 @@ def save_user(user):
             + "\nPresiona Enter para volver al menú principal..."
         )
     else:
-        input(
-            f"\n¡BUEN DIA {user} !\n"
-            + "\nPresiona Enter para volver..."
-        )
+        input(f"\n¡BUEN DIA {user} !\n" + "\nPresiona Enter para volver...")
+
 
 def load_users(file_path=None):
     files_to_load = (
@@ -189,6 +187,7 @@ def get_next_user_id(user_class=Client, file_path=None):
 
     return max(user.id for user in users) + 1
 
+
 def save_records(records, file_path, fields):
     """Save records to a CSV file."""
     with open(file_path, "w", newline="", encoding="utf-8") as file:
@@ -199,8 +198,18 @@ def save_records(records, file_path, fields):
             writer.writerow(user_to_row(record))
 
 
-def save_users(users, clients_file=CLIENTS_FILE, admins_file=ADMINS_FILE):
-    """Save clients and administrators to their respective files."""
+def save_users(users, user_class=None):
+    """Save users to their corresponding CSV files."""
+    if user_class is Client:
+        records = [user for user in users if isinstance(user, Client)]
+        save_records(records, CLIENTS_FILE, CLIENT_FIELDS)
+        return
+
+    if user_class is Admin:
+        records = [user for user in users if isinstance(user, Admin)]
+        save_records(records, ADMINS_FILE, ADMIN_FIELDS)
+        return
+
     clients = [user for user in users if isinstance(user, Client)]
     admins = [user for user in users if isinstance(user, Admin)]
 

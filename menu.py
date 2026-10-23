@@ -351,7 +351,7 @@ def show_client_menu(current_user, users):
                 if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
                     current_user.update_preferences(*data)
-                    save_users(users)
+                    save_users(users, Client)
             case "4":
                 if current_user := require_current_user(users, current_user):
                     show_matches()
