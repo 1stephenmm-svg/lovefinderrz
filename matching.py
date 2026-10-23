@@ -1,5 +1,3 @@
-from user import Client
-
 def find_compatible_clients(current_client, clients):
 
     compatible_clients = []
@@ -8,9 +6,6 @@ def find_compatible_clients(current_client, clients):
         return clients
 
     for client in clients:
-        if not isinstance(client, Client):
-            continue
-        
         if client == current_client:
             continue
 
