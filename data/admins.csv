@@ -1,2 +1,2 @@
-id,nickname,email,password_hash,password_salt,created_at,is_active
-1,admin,admin@lovefinderrz.com,49acf06eb39f05bf516d66c361c16ff2e86309dd1bb349124b5e75b6f4c43421,21b65da24537fbedc128a4c4722edf46,2026-10-20T18:51:10.668414,True
+id,nickname,last_login,email,password_hash,password_salt,created_at,is_active
+1,admin,2026-10-24T09:56:02.508793,admin@lovefinderrz.com,49acf06eb39f05bf516d66c361c16ff2e86309dd1bb349124b5e75b6f4c43421,21b65da24537fbedc128a4c4722edf46,2026-10-20T18:51:10.668414,True

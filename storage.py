@@ -10,6 +10,7 @@ CLIENTS_FILE = "data/clients.csv"
 ADMIN_FIELDS = [
     "id",
     "nickname",
+    "last_login",
     "email",
     "password_hash",
     "password_salt",
@@ -20,6 +21,7 @@ ADMIN_FIELDS = [
 CLIENT_FIELDS = [
     "id",
     "nickname",
+    "last_login",
     "gender",
     "orientation",
     "birth_date",
@@ -40,6 +42,7 @@ def user_to_row(user):
     common_fields = {
         "id": user.id,
         "nickname": user.nickname,
+        "last_login": user.last_login.isoformat(),
         "email": user.email,
         "created_at": user.created_at.isoformat(),
         "is_active": user.is_active,
@@ -131,9 +134,11 @@ def load_users(file_path=None):
 
                 for row in reader:
                     created_at = datetime.fromisoformat(row["created_at"])
+                    last_login = datetime.fromisoformat(row["last_login"])
 
                     common = {
                         "id": int(row["id"]),
+                        "last_login": last_login,
                         "nickname": row["nickname"],
                         "email": row["email"],
                         "created_at": created_at,

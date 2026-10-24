@@ -8,7 +8,9 @@ from location import get_random_location
 
 
 class User:
-    def __init__(self, id, nickname, email, balance=0, created_at=None):
+    def __init__(
+        self, id, nickname, email, balance=0, created_at=None, last_login=None
+    ):
         self.validate_nickname(nickname)
         self.validate_email(email)
 
@@ -18,6 +20,7 @@ class User:
         self.balance = balance
         self.is_active = True
         self.created_at = created_at or datetime.now()
+        self.last_login = last_login or self.created_at
 
     # Validations
 
@@ -88,10 +91,11 @@ class Admin(User):
         email,
         balance=0,
         created_at=None,
+        last_login=None,
         password_hash=None,
         password_salt=None,
     ):
-        super().__init__(id, nickname, email, balance, created_at)
+        super().__init__(id, nickname, email, balance, created_at, last_login)
 
         self.password_hash = password_hash
         self.password_salt = password_salt
@@ -113,8 +117,9 @@ class Client(User):
         location,
         balance=0,
         created_at=None,
+        last_login=None,
     ):
-        super().__init__(id, nickname, email, balance, created_at)
+        super().__init__(id, nickname, email, balance, created_at, last_login)
 
         self.validate_gender(gender)
         self.validate_sexual_orientation(orientation)
