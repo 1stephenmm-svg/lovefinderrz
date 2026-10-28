@@ -12,6 +12,12 @@ The project begins as a Python console application to manage profiles and find p
 
 ______________________________________________________________________
 
+## Author
+
+**Lucio Stephen Molina Martínez** — Software developer and creator of this project.
+
+______________________________________________________________________
+
 ## Features and Design
 
 The first version includes profile creation and validation, user filtering based on preferences and geographic location, and data persistence via CSV files. It uses Nominatim from OpenStreetMap to obtain coordinates and incorporates fallback mechanisms in case of certain errors with the external service.
