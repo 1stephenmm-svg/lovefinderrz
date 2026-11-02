@@ -128,14 +128,14 @@ def test_register_admin_valid():
 
     admins = []
 
-    admin = register_user(
-        admins,
-        Admin,
-        "admin",
-        "admin@lovefinderrz.com",
-        password_salt,
-        password_hash,
-    )
+    data = {
+        "nickname": "admin",
+        "email": "admin@lovefinderrz.com",
+        "password_salt": password_salt,
+        "password_hash": password_hash,
+    }
+
+    admin = register_user(admins, Admin, data)
 
     assert len(admins) == 1
     assert admins[0] is admin
@@ -150,16 +150,16 @@ def test_register_admin_valid():
 def test_register_client_valid():
     clients = []
 
-    client = register_user(
-        clients,
-        Client,
-        "cliente",
-        "M",
-        "H",
-        date(1990, 5, 15),
-        "cliente@example.com",
-        "Pasto",
-    )
+    data = {
+        "nickname": "cliente",
+        "gender": "M",
+        "orientation": "H",
+        "birth_date": date(1990, 5, 15),
+        "email": "cliente@example.com",
+        "city": "Pasto",
+    }
+
+    client = register_user(clients, Client, data)
 
     assert len(clients) == 1
     assert clients[0] is client
