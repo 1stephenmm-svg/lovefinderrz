@@ -149,7 +149,7 @@ def show_register_menu(users, user_class=Client, username=None):
     show_header()
 
     nickname = input_nickname(users, user_class=user_class, username=username)
-    email = f"{username}@lovefinderrz.com" if username else input_email()
+    email = f"{nickname}@lovefinderrz.com" if username else input_email()
     password = nickname if not username else input_password()
 
     if user_class is Admin:
