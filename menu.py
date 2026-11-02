@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 from data import CITIES
 from matching import find_compatible_clients
-from storage import save_user, save_users
+from storage import save_user, save_users_to_csv
 from user import Admin, Client
 from user_service import register_user
 
@@ -363,7 +363,7 @@ def show_client_menu(current_user, users):
                 if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
                     current_user.update_preferences(*data)
-                    save_users(users, Client)
+                    save_users_to_csv(users, Client)
             case "4":
                 if current_user := require_current_user(users, current_user):
                     show_matches()

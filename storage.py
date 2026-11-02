@@ -209,7 +209,7 @@ def save_records(records, file_path, fields):
             writer.writerow(user_to_row(record))
 
 
-def save_users(users, user_class=None):
+def save_users_to_csv(users, user_class=None):
     """Save users to their corresponding CSV files."""
     if user_class is Client:
         records = [user for user in users if isinstance(user, Client)]
