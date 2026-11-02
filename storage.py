@@ -211,18 +211,16 @@ def save_records(records, file_path, fields):
 
 def save_users_to_csv(users, user_class=None):
     """Save users to their corresponding CSV files."""
-    if user_class is Client:
-        records = [user for user in users if isinstance(user, Client)]
-        save_records(records, CLIENTS_FILE, CLIENT_FIELDS)
-        return
 
-    if user_class is Admin:
-        records = [user for user in users if isinstance(user, Admin)]
-        save_records(records, ADMINS_FILE, ADMIN_FIELDS)
-        return
+    configurations = {
+        Client: (CLIENTS_FILE, CLIENT_FIELDS),
+        Admin: (ADMINS_FILE, ADMIN_FIELDS),
+    }
 
-    clients = [user for user in users if isinstance(user, Client)]
-    admins = [user for user in users if isinstance(user, Admin)]
+    classes =[user_class] if user_class is not None else [Client, Admin]
 
-    save_records(clients, CLIENTS_FILE, CLIENT_FIELDS)
-    save_records(admins, ADMINS_FILE, ADMIN_FIELDS)
+    for cls in classes:
+        file_path, fields = configurations[cls]
+        records = [user for user in users if isinstance(user, cls)]
+
+        save_records(records, file_path, fields)
