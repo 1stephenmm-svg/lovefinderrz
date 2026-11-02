@@ -1,34 +1,10 @@
 from storage import get_next_user_id
-from user import Admin, Client
 
 
-def register_user(users, user_class, *data):
+def register_user(users, user_class, data):
     """Create a user, add it to the user list, and return it."""
     user_id = get_next_user_id(user_class)
-
-    if user_class is Admin:
-        nickname, email, salt, password_hash = data
-
-        user = Admin.create(
-            user_id,
-            nickname=nickname,
-            email=email,
-            password_hash=password_hash,
-            password_salt=salt,
-        )
-
-    else:
-        nickname, gender, orientation, birth_date, email, city = data
-
-        user = Client.create(
-            user_id,
-            nickname,
-            gender,
-            orientation,
-            birth_date,
-            email,
-            city,
-        )
+    user = user_class.create(user_id, **data)
 
     users.append(user)
 

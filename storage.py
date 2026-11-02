@@ -38,6 +38,22 @@ CLIENT_FIELDS = [
 ]
 
 
+def show_registration_success(user):
+    if isinstance(user, Client):
+        input(
+            f"\n¡TE DOY LA BIENVENIDA {user} A LOVEFINDERRZ!\n"
+            "Ahora puedes:\n"
+            "- mirar perfiles.\n"
+            "- cambiar tus preferencias.\n"
+            "- mirar tus matches."
+            "\nPresiona Enter para volver al menú principal..."
+        )
+    else:
+        input(
+            f"\n¡BUEN DÍA {user}!\n"
+            "\nPresiona Enter para volver..."
+        )
+
 def user_to_row(user):
     common_fields = {
         "id": user.id,
@@ -100,17 +116,7 @@ def save_user(user):
 
         writer.writerow(row)
 
-    if isinstance(user, Client):
-        input(
-            f"\n¡TE DOY LA BIENVENIDA {user} A LOVEFINDERRZ!\n"
-            + "Ahora puedes:\n"
-            + "- mirar perfiles.\n"
-            + "- cambiar tus preferencias.\n"
-            + "- mirar tus matches."
-            + "\nPresiona Enter para volver al menú principal..."
-        )
-    else:
-        input(f"\n¡BUEN DIA {user} !\n" + "\nPresiona Enter para volver...")
+    show_registration_success(user)
 
 
 def load_users(file_path=None):

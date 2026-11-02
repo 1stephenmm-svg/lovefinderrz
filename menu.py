@@ -190,12 +190,17 @@ def show_register_menu(users, user_class=Client, username=None):
     if user_class is Admin:
         salt, password_hash = password
 
-        confirmation = (
-            input("¿Registrar administrador? (S/N): ").strip().upper()
-        )
+        confirmation = input(
+            "¿Registrar administrador? (S/N): "
+        ).strip().upper()
 
         if confirmation == "S":
-            return nickname, email, salt, password_hash
+            return {
+                "nickname": nickname,
+                "email": email,
+                "password_hash": password_hash,
+                "password_salt": salt,
+            }
 
         return None
 
@@ -207,7 +212,14 @@ def show_register_menu(users, user_class=Client, username=None):
     confirmation = input("¿Registrar usuario? (S/N): ").strip().upper()
 
     if confirmation == "S":
-        return nickname, gender, orientation, birth_date, email, city
+        return {
+            "nickname": nickname,
+            "gender": gender,
+            "orientation": orientation,
+            "birth_date": birth_date,
+            "email": email,
+            "city": city,
+        }
 
     return None
 
@@ -219,7 +231,7 @@ def register_user_from_menu(users, user_class=Client, username=None):
     if not data:
         return None
 
-    user = register_user(users, user_class, *data)
+    user = register_user(users, user_class, data)
     save_user(user)
 
     return user
