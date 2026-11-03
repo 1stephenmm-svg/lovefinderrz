@@ -49,10 +49,8 @@ def show_registration_success(user):
             "\nPresiona Enter para volver al menú principal..."
         )
     else:
-        input(
-            f"\n¡BUEN DÍA {user}!\n"
-            "\nPresiona Enter para volver..."
-        )
+        input(f"\n¡BUEN DÍA {user}!\n" "\nPresiona Enter para volver...")
+
 
 def user_to_row(user):
     common_fields = {
@@ -152,8 +150,12 @@ def load_users(file_path=None):
 
                     user = None
 
-                    if user_class == Admin:
-                        user = Admin(**common)
+                    if user_class is Admin:
+                        user = Admin(
+                            **common,
+                            password_hash=row["password_hash"],
+                            password_salt=row["password_salt"],
+                        )
 
                     else:
                         birth_date = date.fromisoformat(row["birth_date"])
@@ -217,7 +219,7 @@ def save_users_to_csv(users, user_class=None):
         Admin: (ADMINS_FILE, ADMIN_FIELDS),
     }
 
-    classes =[user_class] if user_class is not None else [Client, Admin]
+    classes = [user_class] if user_class is not None else [Client, Admin]
 
     for cls in classes:
         file_path, fields = configurations[cls]

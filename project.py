@@ -1,6 +1,11 @@
 import sys
 
-from menu import register_user_from_menu, show_admin_menu, show_client_menu
+from menu import (
+    register_user_from_menu,
+    show_admin_menu,
+    show_client_menu,
+    show_login_menu,
+)
 from storage import CLIENTS_FILE, load_users
 from user import Admin
 
@@ -21,8 +26,10 @@ def main():
                 users, user_class=Admin, username=username
             )
         elif command == "-l":
-            # TODO
-            pass
+            users = load_users()
+            current_user = show_login_menu(
+                users, user_class=Admin, username=username
+            )
     except ValueError as error:
         sys.exit(str(error))
 

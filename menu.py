@@ -206,17 +206,15 @@ def show_client_access_menu():
 def register_user_from_menu(users, user_class=Client, username=None):
     """Register a user or display the client access submenu."""
 
-    option = show_client_access_menu()
+    if user_class is Client:
 
-    if option == "2":
-        return show_login_menu(users, user_class=Client)
+        option = show_client_access_menu()
 
-    if option == "3":
-        return None
+        if option == "2":
+            return show_login_menu(users, user_class=Client)
 
-    if option != "1":
-        print("Opción inválida.")
-        return None
+        if option not in ("1", "3"):
+            return None
 
     """Register and save a user through the console menu."""
     data = show_register_menu(users, user_class=user_class, username=username)
@@ -230,12 +228,12 @@ def register_user_from_menu(users, user_class=Client, username=None):
     return user
 
 
-def show_login_menu(users, user_class=None):
+def show_login_menu(users, user_class=None, username=None):
     """Request credentials and authenticate a user."""
-    nickname = input("¿Cual es tu Nickname?: ").strip()
+    nickname = username or input("¿Cual es tu Nickname?: ").strip()
 
     user = None
-    
+
     for candidate in users:
         if candidate.nickname == nickname:
             if not user_class or isinstance(candidate, user_class):
@@ -263,8 +261,11 @@ def show_login_menu(users, user_class=None):
 
     user.is_active = True
     user.last_login = datetime.now()
+
+    nickname = user.nickname if isinstance(user, Client) else user
+
     input(
-        f"¡¡Bienvenido de vuelta, {user.nickname}.!!. Presiona Enter para "
+        f"¡¡Bienvenido de vuelta, {nickname}.!!. Presiona Enter para "
         + "continuar..."
     )
     return user
@@ -352,8 +353,8 @@ def require_current_user(users, current_user):
 
     answer = (
         input(
-            "Necesitas registrarte para acceder a esta opción. "
-            "¿Quieres hacerlo ahora? (S/N): "
+            "Necesitas iniciar sesión o registrarte para acceder a esta "
+            + "opción.\n¿Quieres hacerlo ahora? (S/N): "
         )
         .strip()
         .upper()
