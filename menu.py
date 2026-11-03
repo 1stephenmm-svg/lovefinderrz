@@ -259,14 +259,20 @@ def show_login_menu(users, user_class=None, username=None):
         print("Contraseña incorrecta.")
         return None
 
+    welcome_msg = (
+        "Bienvenido de vuelta"
+        if user.is_active
+        else "Me alegra que estés de nuevo acá"
+    )
     user.is_active = True
     user.last_login = datetime.now()
+
     save_users_to_csv(users, user_class)
 
     nickname = user.nickname if isinstance(user, Client) else user
 
     input(
-        f"¡¡Bienvenido de vuelta, {nickname}.!!. Presiona Enter para "
+        f"¡¡{welcome_msg}, {nickname}.!!. Presiona Enter para "
         + "continuar..."
     )
     return user

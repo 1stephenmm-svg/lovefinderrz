@@ -29,9 +29,6 @@ def authenticate_user(users, nickname, password, user_class=None):
         if user_class is not None and not isinstance(user, user_class):
             continue
 
-        if not user.is_active:
-            return None
-
         if isinstance(user, Client):
             return user if password == user.nickname else None
 
