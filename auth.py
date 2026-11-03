@@ -1,6 +1,52 @@
 import hashlib
 import secrets
 
+from user import Admin, Client
+
+
+def verify_password(password, salt_hex, hash_hex):
+    """Verify an administrator's password."""
+    if not salt_hex or not hash_hex:
+        return False
+
+    salt = bytes.fromhex(salt_hex)
+    password_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        password.encode(),
+        salt,
+        600_000,
+    )
+
+    return secrets.compare_digest(password_hash.hex(), hash_hex)
+
+
+def authenticate_user(users, nickname, password, user_class=None):
+    """Authenticate an administrator or client."""
+    for user in users:
+        if user.nickname != nickname:
+            continue
+
+        if user_class is not None and not isinstance(user, user_class):
+            continue
+
+        if not user.is_active:
+            return None
+
+        if isinstance(user, Client):
+            return user if password == user.nickname else None
+
+        if isinstance(user, Admin):
+            if verify_password(
+                password,
+                user.password_salt,
+                user.password_hash,
+            ):
+                return user
+
+        return None
+
+    return None
+
 
 def hash_password(password):
     """

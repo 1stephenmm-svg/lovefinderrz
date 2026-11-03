@@ -1,10 +1,12 @@
+import sys
+
 from datetime import datetime
 from getpass import getpass
 
 from pyfiglet import Figlet
 from tabulate import tabulate
 
-from auth import hash_password
+from auth import authenticate_user, hash_password
 from data import CITIES
 from matching import find_compatible_clients
 from storage import save_user, save_users_to_csv
@@ -189,7 +191,33 @@ def show_register_menu(users, user_class=Client, username=None):
     return None
 
 
+def show_client_access_menu():
+    """Display the client access submenu and return the selected option."""
+    show_header()
+
+    print("¿QUÉ QUIERES HACER?\n")
+    print("1. Registrarme")
+    print("2. Iniciar sesión")
+    print("3. Volver al menú principal\n")
+
+    return input("Selecciona una opción: ").strip()
+
+
 def register_user_from_menu(users, user_class=Client, username=None):
+    """Register a user or display the client access submenu."""
+
+    option = show_client_access_menu()
+
+    if option == "2":
+        return show_login_menu(users, user_class=Client)
+
+    if option == "3":
+        return None
+
+    if option != "1":
+        print("Opción inválida.")
+        return None
+
     """Register and save a user through the console menu."""
     data = show_register_menu(users, user_class=user_class, username=username)
 
@@ -199,6 +227,46 @@ def register_user_from_menu(users, user_class=Client, username=None):
     user = register_user(users, user_class, data)
     save_user(user)
 
+    return user
+
+
+def show_login_menu(users, user_class=None):
+    """Request credentials and authenticate a user."""
+    nickname = input("¿Cual es tu Nickname?: ").strip()
+
+    user = None
+    
+    for candidate in users:
+        if candidate.nickname == nickname:
+            if not user_class or isinstance(candidate, user_class):
+                user = candidate
+                break
+    if user is None:
+        input("No te encontré en mi memoria. Presiona Enter para volver...")
+        return None
+
+    if isinstance(user, Client) and user.is_blocked:
+        sys.exit("Tu cuenta está bloqueada. Seguro algo malo hiciste")
+
+    password = getpass("Escribe tu Contraseña: ")
+
+    user = authenticate_user(
+        users,
+        nickname,
+        password,
+        user_class=user_class,
+    )
+
+    if user is None:
+        print("Contraseña incorrecta.")
+        return None
+
+    user.is_active = True
+    user.last_login = datetime.now()
+    input(
+        f"¡¡Bienvenido de vuelta, {user.nickname}.!!. Presiona Enter para "
+        + "continuar..."
+    )
     return user
 
 
@@ -302,7 +370,7 @@ def display_client_menu():
     """Display the main menu options for clients."""
     show_header()
 
-    print("1. Regístrate")
+    print("1. Inicia sesión/Regístrate")
     print("2. Mira perfiles")
     print("3. Tus preferencias")
     print("4. Mira tus matches")
