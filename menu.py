@@ -261,6 +261,7 @@ def show_login_menu(users, user_class=None, username=None):
 
     user.is_active = True
     user.last_login = datetime.now()
+    save_users_to_csv(users, user_class)
 
     nickname = user.nickname if isinstance(user, Client) else user
 
