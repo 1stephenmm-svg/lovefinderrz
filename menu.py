@@ -1,5 +1,7 @@
 import sys
 
+import emoji
+
 from datetime import datetime
 from getpass import getpass
 
@@ -197,11 +199,11 @@ def show_client_access_menu():
     show_header()
 
     print("¿QUÉ QUIERES HACER?\n")
-    print("1. Registrarme")
-    print("2. Iniciar sesión")
-    print("3. Volver al menú principal\n")
+    print(emoji.emojize(":waving_hand: 1. Registrarme"))
+    print(emoji.emojize(":locked_with_key: 2. Iniciar sesión"))
+    print(emoji.emojize(":door: 3. Volver al menú principal"))
 
-    return input("Selecciona una opción: ").strip()
+    return input("\nSelecciona una opción: ").strip()
 
 
 def register_user_from_menu(users, user_class=Client, username=None):
@@ -244,11 +246,21 @@ def show_login_menu(users, user_class=None, username=None):
                 user = candidate
                 break
     if user is None:
-        input("No te encontré en mi memoria. Presiona Enter para volver...")
+        input(
+            emoji.emojize(
+                "No te encontré en mi memoria. :face_without_mouth:"
+                + "\nPresiona Enter para volver..."
+            )
+        )
         return None
 
     if isinstance(user, Client) and user.is_blocked:
-        sys.exit("Tu cuenta está bloqueada. Seguro algo malo hiciste")
+        sys.exit(
+            emoji.emojize(
+                "Tu cuenta está bloqueada. Seguro algo malo hiciste "
+                + ":slightly_frowning_face:"
+            )
+        )
 
     password = getpass("Escribe tu Contraseña: ")
 
@@ -264,9 +276,9 @@ def show_login_menu(users, user_class=None, username=None):
         return None
 
     welcome_msg = (
-        "Bienvenido de vuelta"
+        emoji.emojize(":sparkles: Bienvenido de vuelta")
         if user.is_active
-        else "Me alegra que estés de nuevo acá"
+        else emoji.emojize(":smiling_face: Me alegra que estés de nuevo acá")
     )
     user.is_active = True
     user.last_login = datetime.now()
@@ -276,8 +288,8 @@ def show_login_menu(users, user_class=None, username=None):
     nickname = user.nickname if isinstance(user, Client) else user
 
     input(
-        f"¡¡{welcome_msg}, {nickname}.!!. Presiona Enter para "
-        + "continuar..."
+        f"¡¡{welcome_msg}, {nickname}.!!."
+        + "\nPresiona Enter para continuar..."
     )
     return user
 
@@ -400,8 +412,11 @@ def require_current_user(users, current_user):
 
     answer = (
         input(
-            "Necesitas iniciar sesión o registrarte para acceder a esta "
-            + "opción.\n¿Quieres hacerlo ahora? (S/N): "
+            emoji.emojize(
+                ":hand_with_fingers_splayed:  Necesitas iniciar sesión o "
+                + "registrarte para acceder a esta opción."
+                + "\n¿Quieres hacerlo ahora? (S/N): "
+            )
         )
         .strip()
         .upper()
@@ -418,12 +433,12 @@ def display_client_menu(current_user):
     """Display the main menu options for clients."""
     show_header()
 
-    print("1. Mira perfiles")
+    print(emoji.emojize(":eyes: 1. Chismosea perfiles y reparte likes"))
     if current_user is None:
-        print("2. Iniciar sesión/Regístrate")
-    print("3. Tus preferencias")
-    print("4. Mira tus matches")
-    print("5. Salir")
+        print(emoji.emojize(":waving_hand: 2. Iniciar sesión/Regístrate"))
+    print(emoji.emojize(":bullseye: 3. Tus preferencias"))
+    print(emoji.emojize(":couple_with_heart: 4. Mira tus matches"))
+    print(emoji.emojize(":door: 5. Salir"))
 
 
 def show_client_menu(current_user, users):
@@ -431,7 +446,7 @@ def show_client_menu(current_user, users):
     while True:
         display_client_menu(current_user)
 
-        option = input("Selecciona una opción: ").strip()
+        option = input("\nSelecciona una opción: ").strip()
         match option:
             case "1":
                 compatible_clients = find_compatible_clients(

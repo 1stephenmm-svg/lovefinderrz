@@ -1,5 +1,7 @@
 import re
 
+import emoji
+
 from datetime import date, datetime
 
 from validator_collection import checkers
@@ -101,7 +103,9 @@ class Admin(User):
         self.password_salt = password_salt
 
     def __str__(self):
-        return f"{self.nickname.upper()} MI AMO Y SEÑOR"
+        return emoji.emojize(
+            f"{self.nickname.upper()} MI AMO Y SEÑOR :saluting_face:"
+        )
 
 
 class Client(User):

@@ -3,3 +3,4 @@ pytest
 requests
 tabulate
 validator-collection
+emoji
