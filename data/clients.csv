@@ -1,6 +1,6 @@
 id,nickname,last_login,gender,orientation,birth_date,city,email,latitude,longitude,balance,is_active,is_blocked,same_orientation,same_location,created_at
 1,cuasipundio,2026-10-14T01:00:22.621445,M,O,1970-01-01,"Ipiales, Nariño, Colombia",cuasipundio@gerchan.com,0.5899033552928232,-77.37465979830091,0,True,False,True,True,2026-10-14T01:00:22.621445
-2,ana,2026-11-04T11:24:31.632927,F,H,2001-12-01,"Pasto, Nariño, Colombia",ana@mail.com,1.1948707562614433,-77.25042197209488,0,True,False,False,False,2026-10-14T01:00:22.621445
+2,ana,2026-11-04T14:49:27.864989,F,H,2001-12-01,"Pasto, Nariño, Colombia",ana@mail.com,1.1948707562614433,-77.25042197209488,0,True,False,True,True,2026-10-14T01:00:22.621445
 3,konan,2026-10-14T10:56:02.508793,F,O,2004-06-06,"Pasto, Nariño, Colombia",konan@mail.edu.co,1.237998759256672,-77.28628657695695,0,True,False,True,True,2026-10-14T01:00:22.621445
 4,daito,2026-10-14T11:56:02.508793,M,O,2007-05-15,"Pasto, Nariño, Colombia",daito@mail.org,1.21999282493774,-77.26271104768443,0,True,False,True,True,2026-10-14T01:00:22.621445
 5,edward,2026-10-14T09:56:02.508793,M,H,1985-12-07,"Pasto, Nariño, Colombia",edward@mail.com,1.1912531485221207,-77.27819609465087,0,True,False,True,True,2026-10-14T01:00:22.621445

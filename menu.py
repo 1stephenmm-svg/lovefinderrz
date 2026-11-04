@@ -414,12 +414,13 @@ def require_current_user(users, current_user):
 
 
 # 4. Main Menus by Role
-def display_client_menu():
+def display_client_menu(current_user):
     """Display the main menu options for clients."""
     show_header()
 
     print("1. Mira perfiles")
-    print("2. Inicia sesión/Regístrate")
+    if current_user is None:
+        print("2. Iniciar sesión/Regístrate")
     print("3. Tus preferencias")
     print("4. Mira tus matches")
     print("5. Salir")
@@ -428,7 +429,7 @@ def display_client_menu():
 def show_client_menu(current_user, users):
     """Handle client menu interactions."""
     while True:
-        display_client_menu()
+        display_client_menu(current_user)
 
         option = input("Selecciona una opción: ").strip()
         match option:
