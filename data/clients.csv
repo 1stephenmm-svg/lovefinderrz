@@ -27,4 +27,4 @@ id,nickname,last_login,gender,orientation,birth_date,city,email,latitude,longitu
 26,emily,2026-10-24T09:56:02.508793,F,H,2007-12-03,"Túquerres, Nariño, Colombia",emily@mail.org,1.2549479818462579,-77.64980716580146,0,True,False,True,True,2026-10-14T01:00:22.621445
 27,ruben,2026-10-22T10:56:02.508793,M,H,1995-11-11,"Tumaco, Nariño, Colombia",ruben@mail.com,2.20772350562513,-78.40649030132133,0,True,False,True,True,2026-10-14T01:00:22.621445
 28,luis,2026-10-20T09:56:02.508793,M,H,1980-01-01,"Cali, Valle del Cauca, Colombia",luis@mail.edu.co,3.3285949042438734,-76.68696001966936,0,True,False,True,True,2026-10-14T01:00:22.621445
-29,stephen.1-23,2026-10-17T10:56:02.508793,M,H,1982-09-06,"Pasto, Nariño, Colombia",as@g.com,1.1833655229883322,-77.25088766883596,0,True,False,True,True,2026-10-19T09:06:26.808428
+29,stephen.1-23,2026-11-04T15:31:29.070537,M,H,1982-09-06,"Pasto, Nariño, Colombia",as@g.com,1.226767,-77.268533,0,True,False,True,True,2026-10-19T09:06:26.808428
