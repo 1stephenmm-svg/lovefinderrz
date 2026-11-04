@@ -418,8 +418,8 @@ def display_client_menu():
     """Display the main menu options for clients."""
     show_header()
 
-    print("1. Inicia sesión/Regístrate")
-    print("2. Mira perfiles")
+    print("1. Mira perfiles")
+    print("2. Inicia sesión/Regístrate")
     print("3. Tus preferencias")
     print("4. Mira tus matches")
     print("5. Salir")
@@ -433,13 +433,13 @@ def show_client_menu(current_user, users):
         option = input("Selecciona una opción: ").strip()
         match option:
             case "1":
-                current_user = register_user_from_menu(users) or current_user
-            case "2":
                 compatible_clients = find_compatible_clients(
                     current_user,
                     users,
                 )
                 show_profiles(compatible_clients, current_user)
+            case "2":
+                current_user = register_user_from_menu(users) or current_user
             case "3":
                 if current_user := require_current_user(users, current_user):
                     data = show_preferences_menu()
@@ -449,6 +449,7 @@ def show_client_menu(current_user, users):
                 if current_user := require_current_user(users, current_user):
                     show_matches()
             case "5":
+                current_user = None
                 break
             case _:
                 pass
