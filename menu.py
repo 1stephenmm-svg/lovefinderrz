@@ -336,13 +336,18 @@ def show_profiles(users, current_user):
 
         rows = [
             [
+                profile["client"].id,
                 profile["client"].nickname,
                 f"{profile['client'].age} años",
-                "Masculino" if profile["client"].gender == "M" else "Femenino",
+                (
+                    emoji.emojize(":man:")
+                    if profile["client"].gender == "M"
+                    else emoji.emojize(":woman:")
+                ),
                 (
                     "Heterosexual"
                     if profile["client"].orientation == "H"
-                    else "Otro"
+                    else emoji.emojize(":rainbow_flag:")
                 ),
                 profile["client"].city,
             ]
@@ -355,6 +360,7 @@ def show_profiles(users, current_user):
         ]
 
         headers = [
+            "ID",
             "Nickname",
             "Edad",
             "Género",
