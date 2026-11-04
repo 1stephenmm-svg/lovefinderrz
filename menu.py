@@ -8,6 +8,7 @@ from tabulate import tabulate
 
 from auth import authenticate_user, hash_password
 from data import CITIES
+from location import calculate_distance
 from matching import find_compatible_clients
 from storage import save_user, save_users_to_csv
 from user import Admin, Client
@@ -291,14 +292,17 @@ def show_profiles(users, current_user):
         if not user.is_active:
             continue
 
+        distance = (
+            calculate_distance(current_user.location, user.location)
+            if current_user is not None
+            else None
+        )
+
         profiles.append(
-            [
-                user.nickname,
-                f"{user.age} años",
-                "Masculino" if user.gender == "M" else "Femenino",
-                "Heterosexual" if user.orientation == "H" else "Otro",
-                user.city,
-            ]
+            {
+                "client": user,
+                "distance": distance,
+            }
         )
 
     if not profiles:
@@ -307,16 +311,49 @@ def show_profiles(users, current_user):
             "Intenta de nuevo más tarde o actualiza tus preferencias."
         )
     else:
+        if current_user is not None:
+            profiles.sort(key=lambda profile: profile["distance"])
+        else:
+            profiles.sort(
+                key=lambda profile: profile["client"].last_login,
+                reverse=True,
+            )
+
+        rows = [
+            [
+                profile["client"].nickname,
+                f"{profile['client'].age} años",
+                "Masculino" if profile["client"].gender == "M" else "Femenino",
+                (
+                    "Heterosexual"
+                    if profile["client"].orientation == "H"
+                    else "Otro"
+                ),
+                profile["client"].city,
+            ]
+            + (
+                [f"{profile['distance']:.2f} km"]
+                if profile["distance"] is not None
+                else []
+            )
+            for profile in profiles
+        ]
+
+        headers = [
+            "Nickname",
+            "Edad",
+            "Género",
+            "Orientación",
+            "Ubicación",
+        ]
+
+        if current_user is not None:
+            headers.append("Distancia")
+
         print(
             tabulate(
-                profiles,
-                headers=[
-                    "Nickname",
-                    "Edad",
-                    "Género",
-                    "Orientación",
-                    "Ubicación",
-                ],
+                rows,
+                headers,
                 tablefmt="grid",
             )
         )

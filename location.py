@@ -7,6 +7,11 @@ URL = "https://nominatim.openstreetmap.org/search"
 HEADERS = {"User-Agent": "Lovefinderrz/0.1.0 (1stephenmm@gmail.com)"}
 
 
+def calculate_distance(current_client_distance, other_client_distance):
+    # TODO: implement
+    return 0
+
+
 def get_city_area(city):
     response = requests.get(
         url=URL,
