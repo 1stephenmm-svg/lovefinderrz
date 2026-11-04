@@ -214,7 +214,10 @@ def register_user_from_menu(users, user_class=Client, username=None):
         if option == "2":
             return show_login_menu(users, user_class=Client)
 
-        if option not in ("1", "3"):
+        if option == "3":
+            return None
+
+        if option != "1":
             return None
 
     """Register and save a user through the console menu."""
