@@ -14,13 +14,41 @@ ______________________________________________________________________
 
 ## Features and Design
 
-The first version includes profile creation and validation, user filtering based on preferences and geographic location, and data persistence via CSV files. It uses Nominatim from OpenStreetMap to obtain coordinates and incorporates fallback mechanisms in case of certain errors with the external service.
+The application currently includes:
+
+- **User registration and profile validation:** separate registration flows for clients and administrators, with input validation and user creation.
+- **Authentication:** login functionality for both clients and administrators, with different authentication mechanisms according to user type.
+- **Profile discovery:** filtering of compatible profiles based on user preferences, account status, and geographic location.
+- **Geographic distance calculation:** implementation of the Haversine formula to calculate distances between geographic coordinates and sort profiles by proximity.
+- **Data persistence:** CSV files are used to store user accounts.
+- **Geolocation:** Nominatim from OpenStreetMap provides geographic coordinates, with fallback mechanisms for certain external service errors.
+
+### Authentication
+
+Lovefinderrz implements different authentication mechanisms for clients and administrators:
+
+- **Clients:** The current development version uses their nickname as their password. This is a simplified authentication mechanism intended for the initial prototype.
+- **Administrators:** Passwords are hashed using PBKDF2-HMAC-SHA256 with a randomly generated salt before being stored. Password verification is handled by the authentication module.
+
+**Development credentials:**
+
+| Account type  | Password                         |
+|---------------|----------------------------------|
+| Client        | Same as the registered nickname  |
+| Administrator | `admin123`                       |
+
+The administrator password corresponds to the preconfigured administrator account included in the project data.
+
+### Project Structure
 
 The code is organized into modules to facilitate maintenance and future development:
 
 ```text
 .
-├── data/                  # CSV files for data persistence
+├── data
+│   ├── admins.csv         # Administrator account data
+│   └── clients.csv        # Client profile data
+├── auth.py                # Password hashing, verification, and authentication
 ├── data.py                # Shared constants and reference data
 ├── location.py            # Geographic coordinate handling
 ├── matching.py            # User compatibility logic
@@ -47,11 +75,14 @@ ______________________________________________________________________
 
 - **Python:** application logic and object-oriented programming.
 - **pytest:** automated testing.
+- **emoji:** terminal menu presentation.
 - **Requests:** HTTP requests.
 - **CSV:** initial data persistence.
 - **Nominatim / OpenStreetMap:** geolocation.
 - **Git and GitHub:** version control.
 
-Future development may include a relational database, authentication, likes and matches, location-based features, and meetup scheduling. The project could also evolve into a across-platform mobile application using Flutter, supported by a REST API built with Django REST Framework or FastAPI. LLM Integration could help interpret natural-language preferences and explain matching results, while data analytics capabilities could reveal user preference patterns. Eventually, I plan to explore a cloud architecture that supports the gradual deployment, integration, and scaling of the system’s components.
+Future development may include migrating CSV persistence to a relational database, expanding authentication and account management, and implementing meetup scheduling. The project could also evolve into a cross-platform mobile application using Flutter, supported by a REST API built with Django REST Framework or FastAPI.
+
+LLM Integration could help interpret natural-language preferences and explain matching results, while data analytics capabilities could reveal user preference patterns. Eventually, I plan to explore a cloud architecture that supports the gradual deployment, integration, and scaling of the system’s components.
 
 Lovefinderrz is, therefore, a project focused on applied learning and incremental development: consolidating Python fundamentals, practicing sound design decisions, and building a maintainable foundation that can grow into a more comprehensive software solution.
