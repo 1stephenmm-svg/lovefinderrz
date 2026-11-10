@@ -6,6 +6,7 @@ from user import Admin, Client
 
 ADMINS_FILE = "data/admins.csv"
 CLIENTS_FILE = "data/clients.csv"
+LIKES_FILE = "data/likes.csv"
 
 ADMIN_FIELDS = [
     "id",
@@ -36,6 +37,29 @@ CLIENT_FIELDS = [
     "same_location",
     "created_at",
 ]
+
+LIKE_FIELDS = ["client_id", "liked_client_id"]
+
+
+def save_like(client_id, liked_client_id):
+    with open(LIKES_FILE, "a", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=LIKE_FIELDS)
+        writer.writerow(
+            {"client_id": client_id, "liked_client_id": liked_client_id}
+        )
+
+
+def load_likes():
+    try:
+        with open(LIKES_FILE, newline="") as file:
+            reader = csv.DictReader(file)
+            return [
+                (int(row["client_id"]), int(row["liked_client_id"]))
+                for row in reader
+            ]
+
+    except FileNotFoundError:
+        return []
 
 
 def show_registration_success(user):

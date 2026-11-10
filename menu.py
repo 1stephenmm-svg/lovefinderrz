@@ -10,9 +10,10 @@ from tabulate import tabulate
 
 from auth import authenticate_user, hash_password
 from data import CITIES
+from likes import register_like
 from location import calculate_distance
 from matching import find_compatible_clients
-from storage import save_user, save_users_to_csv
+from storage import load_likes, save_user, save_users_to_csv
 from user import Admin, Client
 from user_service import register_user
 
@@ -278,7 +279,9 @@ def show_login_menu(users, user_class=None, username=None):
     welcome_msg = (
         emoji.emojize(":sparkles: Bienvenido de vuelta")
         if user.is_active
-        else emoji.emojize(":smiling_face: Me alegra que estés de nuevo acá")
+        else emoji.emojize(
+            ":smiling_face: Me alegra que estés de nuevo acá. Te extrañé resto"
+        )
     )
     user.is_active = True
     user.last_login = datetime.now()
@@ -296,11 +299,22 @@ def show_login_menu(users, user_class=None, username=None):
 
 def show_profiles(users, current_user):
     profiles = []
+    ids = []
+
+    likes = load_likes() if current_user else []
+
+    liked_ids = {
+        liked_client_id
+        for client_id, liked_client_id in likes
+        if current_user and client_id == current_user.id
+    }
 
     show_header()
 
     for user in users:
         if user == current_user:
+            continue
+        if user.id in liked_ids:
             continue
         if user.is_blocked:
             continue
@@ -319,11 +333,15 @@ def show_profiles(users, current_user):
                 "distance": distance,
             }
         )
+        ids.append(user.id)
 
     if not profiles:
-        print(
-            "No encontré perfiles compatibles contigo."
-            "Intenta de nuevo más tarde o actualiza tus preferencias."
+        input(
+            emoji.emojize(
+                "No encontré perfiles compatibles contigo. "
+                + ":face_without_mouth:"
+                + "\nIntenta de nuevo más tarde o actualiza tus preferencias."
+            )
         )
     else:
         if current_user is not None:
@@ -379,7 +397,67 @@ def show_profiles(users, current_user):
             )
         )
 
-    input("\nPresiona Enter para volver al menú principal...")
+        while True:
+            if ids:
+                selected_id = input(
+                    "\nIngresa el número de ID de quien quieres conocer "
+                    "\nó presiona Enter para salir: "
+                ).strip()
+            else:
+                input(
+                    emoji.emojize(
+                        "\n¡Ya diste like a todos los perfiles disponibles! "
+                        + ":grinning_face_with_smiling_eyes:"
+                        + "\nIntenta de nuevo más tarde o actualiza tus "
+                        + "preferencias."
+                    )
+                )
+                break
+
+            if not selected_id:
+                break
+
+            if not selected_id.isdigit():
+                continue
+
+            selected_id = int(selected_id)
+
+            if selected_id not in ids:
+                print(
+                    "El ID del personaje que seleccionaste no existe ó ya le "
+                    + "diste like."
+                )
+                continue
+
+            if current_user is None:
+                current_user = require_current_user(
+                    users, current_user
+                )  # check if client is logged in
+
+                if current_user is None:
+                    return None
+
+                likes = load_likes()
+
+            if register_like(current_user.id, selected_id, likes):
+                input("¡Tu like ya quedó registrado!")
+            else:
+                print("Ya le habías dado like a este perfil.")
+
+            ids.remove(selected_id)
+
+            confirmation = (
+                input("\n¿Quieres seleccionar otro?" + " (S/N)")
+                .strip()
+                .upper()
+            )
+
+            if confirmation == "S":
+                continue
+
+            return None
+
+    return None
 
 
 def show_preferences_menu():
@@ -403,6 +481,12 @@ def show_preferences_menu():
     same_location = location_preference == "S"
 
     return same_orientation, same_location
+
+
+def show_likes():
+    show_header()
+
+    # TODO
 
 
 def show_matches():
@@ -443,8 +527,9 @@ def display_client_menu(current_user):
     if current_user is None:
         print(emoji.emojize(":waving_hand: 2. Iniciar sesión/Regístrate"))
     print(emoji.emojize(":bullseye: 3. Tus preferencias"))
-    print(emoji.emojize(":couple_with_heart: 4. Mira tus matches"))
-    print(emoji.emojize(":door: 5. Salir"))
+    print(emoji.emojize(":heart_exclamation:  4. Tus likes"))
+    print(emoji.emojize(":couple_with_heart: 5. Mira tus matches"))
+    print(emoji.emojize(":door: 6. Salir"))
 
 
 def show_client_menu(current_user, users):
@@ -469,8 +554,11 @@ def show_client_menu(current_user, users):
                     save_users_to_csv(users, Client)
             case "4":
                 if current_user := require_current_user(users, current_user):
-                    show_matches()
+                    show_likes()
             case "5":
+                if current_user := require_current_user(users, current_user):
+                    show_matches()
+            case "6":
                 current_user = None
                 break
             case _:
