@@ -2,9 +2,9 @@
 
 **Version:** `v0.1.0` · Early development
 
-#### Video Demo: [URL pending]
+## Video Demo: [URL pending]
 
-#### Description
+### Description
 
 **Lovefinderrz** is the working title of a software project inspired by the fictional app featured in the *Rick and Morty* series. You can learn more about its origins, history, and appearance in the series on the [Rick and Morty fan wiki](https://rickandmorty.fandom.com/wiki/Lovefinderrz). This *codename* is used during development; the commercial name of the final product has not yet been determined.
 
@@ -20,6 +20,7 @@ The application currently includes:
 - **Authentication:** login functionality for both clients and administrators, with different authentication mechanisms according to user type.
 - **Profile discovery:** filtering of compatible profiles based on user preferences, account status, and geographic location.
 - **Geographic distance calculation:** implementation of the Haversine formula to calculate distances between geographic coordinates and sort profiles by proximity.
+- **Likes management:** registration and retrieval of likes using client IDs, allowing users to track the profiles they have liked and identify mutual likes.
 - **Data persistence:** CSV files are used to store user accounts.
 - **Geolocation:** Nominatim from OpenStreetMap provides geographic coordinates, with fallback mechanisms for certain external service errors.
 
@@ -47,9 +48,11 @@ The code is organized into modules to facilitate maintenance and future developm
 .
 ├── data
 │   ├── admins.csv         # Administrator account data
-│   └── clients.csv        # Client profile data
+│   ├── clients.csv        # Client profile data
+│   └── likes.csv          # Client likes
 ├── auth.py                # Password hashing, verification, and authentication
 ├── data.py                # Shared constants and reference data
+├── likes.py               # Like management and match-related operations
 ├── location.py            # Geographic coordinate handling
 ├── matching.py            # User compatibility logic
 ├── menu.py                # Client and admin menus, registration forms, and user interaction
