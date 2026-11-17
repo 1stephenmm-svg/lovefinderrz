@@ -10,7 +10,7 @@ from tabulate import tabulate
 
 from auth import authenticate_user, hash_password
 from data import CITIES
-from likes import register_like
+from likes import get_client_likes, register_like
 from location import calculate_distance
 from matching import find_compatible_clients
 from storage import load_likes, save_user, save_users_to_csv
@@ -202,10 +202,68 @@ def show_profiles(users, current_user):
 # 3. Likes and mutual interest functions
 
 
-def show_likes():
+def show_likes(current_client, clients):
+    """Display likes sent and received by the current client."""
+    likes = load_likes()
+
+    sent_ids, received_ids = get_client_likes(
+        current_client.id,
+        likes,
+    )
+
+    clients_by_id = {client.id: client for client in clients}
+
     show_header()
 
-    # TODO
+    print(emoji.emojize("\n:red_heart:  TUS POTENCIALES"))
+
+    sent_clients = [
+        clients_by_id[client_id]
+        for client_id in sent_ids
+        if client_id in clients_by_id
+    ]
+
+    if sent_clients:
+        rows = [
+            [client.id, client.nickname, client.age, client.city]
+            for client in sent_clients
+        ]
+
+        print(
+            tabulate(
+                rows,
+                headers=["ID", "Nickname", "Edad", "Ubicación"],
+                tablefmt="grid",
+            )
+        )
+    else:
+        print("Todavía no has dado likes.")
+
+    print(emoji.emojize("\n:envelope_with_arrow: TUS ADMIRADORES"))
+
+    received_clients = [
+        clients_by_id[client_id]
+        for client_id in received_ids
+        if client_id in clients_by_id
+    ]
+
+    if received_clients:
+        rows = [
+            [client.id, client.nickname, client.age, client.city]
+            for client in received_clients
+        ]
+
+        print(
+            tabulate(
+                rows,
+                headers=["ID", "Nickname", "Edad", "Ubicación"],
+                tablefmt="grid",
+            )
+        )
+    else:
+        print("Todavía no has recibido likes.")
+
+    input("\nPresiona Enter para continuar...")
 
 
 def show_mutual_likes():
@@ -570,7 +628,7 @@ def show_client_menu(current_user, users):
                     save_users_to_csv(users, Client)
             case "4":
                 if current_user := require_current_user(users, current_user):
-                    show_likes()
+                    show_likes(current_user, users)
             case "5":
                 if current_user := require_current_user(users, current_user):
                     show_mutual_likes()
